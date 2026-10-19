@@ -1,0 +1,49 @@
+:root {
+  --sl-color-accent-low: #142849;
+  --sl-color-accent: #6598ff;
+  --sl-color-accent-high: #bed3ff;
+  --sl-color-bg: #11151c;
+  --sl-color-bg-nav: #141922;
+  --sl-color-bg-sidebar: #141922;
+  --sl-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sl-content-width: 49rem;
+  --sl-text-h1: 2.5rem;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #edf3ff;
+  --sl-color-accent: #245bd6;
+  --sl-color-accent-high: #15377c;
+  --sl-color-bg: #fff;
+  --sl-color-bg-nav: #fff;
+  --sl-color-bg-sidebar: #f8faff;
+}
+
+.site-title {
+  gap: 0.65rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.site-title img {
+  height: 2rem;
+}
+
+.sl-markdown-content h2 {
+  font-size: 1.45rem;
+  letter-spacing: -0.02em;
+}
+
+.sl-markdown-content table {
+  font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content a {
+  text-underline-offset: 0.18em;
+}
+
+@media (max-width: 49.99rem) {
+  :root {
+    --sl-text-h1: 2rem;
+  }
+}

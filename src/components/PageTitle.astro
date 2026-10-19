@@ -1,0 +1,28 @@
+---
+import DefaultPageTitle from '@astrojs/starlight/components/PageTitle.astro';
+import { markdownPath } from '../lib/docs';
+
+const { entry, id } = Astro.locals.starlightRoute;
+---
+
+<DefaultPageTitle />
+{id !== '404' && !entry.data.draft && (
+  <div class="page-tools" data-pagefind-ignore>
+    <a href={markdownPath(id)}>View as Markdown</a>
+  </div>
+)}
+
+<style>
+  .page-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin-top: 1rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  a {
+    color: var(--sl-color-text-accent);
+    text-underline-offset: 0.2em;
+  }
+</style>

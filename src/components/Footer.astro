@@ -1,0 +1,26 @@
+---
+import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+---
+
+<DefaultFooter />
+<nav aria-label="Documentation resources" data-pagefind-ignore>
+  <a href="/using-these-docs/">Use with AI</a>
+  <a href="/llms.txt">llms.txt</a>
+  <a href="https://github.com/plus-emulator">Source code</a>
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    border-top: 1px solid var(--sl-color-hairline-light);
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    font-size: var(--sl-text-sm);
+  }
+  a {
+    color: var(--sl-color-gray-2);
+    text-underline-offset: 0.2em;
+  }
+</style>
