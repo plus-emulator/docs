@@ -1,6 +1,6 @@
 ---
 title: Rooms and building
-description: Room settings, furniture placement, build height, room games, and community features.
+description: Room settings, furniture placement, build height, room backgrounds, room games, and community features.
 sidebar:
   order: 4
 ---
@@ -30,6 +30,14 @@ The supported range is `0` to `40`. Values are rounded to two decimal places. Ty
 The command changes placement height for your current room user. It does not grant furniture editing rights.
 
 [Wired](/features/wired/) adds room interactions. The [camera](/features/camera/) provides wall photographs and navigator thumbnails.
+
+## Room backgrounds
+
+A room background is a furniture item that shows an image in the room. To set the image, the user needs the `room.item_save_branding_items` permission and must own the room. Staff with `room.owner_any` can also set it. In the default roles, only Developer and Owner have this permission. You can give it to another role, for example a custom "Room builder" role. See [grant an existing permission](/administration/custom-permissions/#grant-an-existing-permission).
+
+Click the background in the room. The fields `imageUrl`, `offsetX`, `offsetY`, and `offsetZ` show in the info stand. Users without the permission do not see these fields.
+
+The image and click addresses must be empty or start with `http://` or `https://`. The emulator refuses other addresses, such as `javascript:` or `data:` addresses.
 
 ## Games
 

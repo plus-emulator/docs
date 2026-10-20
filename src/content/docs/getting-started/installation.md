@@ -38,6 +38,20 @@ Both commands download and run the installer. To read the script first, download
 
 Answer the prompts for your domain, WebSocket address, hotel name, admin username, and admin email. Keep the suggested WebSocket address, `wss://your-domain/ws`, unless your setup needs a separate hostname.
 
+### Choose the setup guide
+
+The installer writes a **simple** setup guide by default. The **advanced** guide adds a manual checklist for administrator access, firewall rules, and maintenance. The choice changes the instructions only. It does not change SSH, RDP, firewall, update, or backup settings.
+
+To choose the advanced guide, use `sudo bash install.sh --guide-mode advanced` on Linux or `.\install.ps1 -GuideMode advanced` on Windows. With the one-command installation on Linux, run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo env PLUSEMU_GUIDE_MODE=advanced bash
+```
+
+The installer saves the choice and reuses it when you run it again.
+
+### Save your login details
+
 Save the initial admin login details shown at the end. The installer also saves its answers and credentials in a protected local file.
 
 ## Connect your domain
@@ -68,6 +82,6 @@ For Cloudflare connection errors, use the troubleshooting section in the generat
 
 ## Next steps
 
-Read [configuration](/getting-started/configuration/) for file locations and service commands. Camera rendering needs a [separate setup](/features/camera-setup/).
+Read [configuration](/getting-started/configuration/) for file locations and service commands. Camera rendering needs a [separate setup](/features/camera-setup/). To update the hotel later, see [update PlusEMU](/getting-started/updates/).
 
 For an emulator-only installation, use the [PlusEMU release archives](https://github.com/plus-emulator/PlusEMU/releases) and the [manual setup instructions](https://github.com/plus-emulator/PlusEMU#setup). The archives are self-contained and do not require a separate .NET installation.

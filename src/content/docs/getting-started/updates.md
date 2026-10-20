@@ -1,13 +1,55 @@
 ---
 title: Update PlusEMU
-description: Replace the emulator safely and understand automatic database migrations and backups.
+description: Update PlusEMU and Volt with plusemu-update or by hand, and understand database migrations and backups.
 sidebar:
   order: 3
 ---
 
-Update the emulator from a [PlusEMU release](https://github.com/plus-emulator/PlusEMU/releases). Running the installer again does not update the emulator or the client. It does fetch Atom CMS again and rewrite the web server configuration, so do not use it to update.
+On a Linux hotel set up with the installer, use the `plusemu-update` command. On Windows, or for a manual installation, [update by hand](#update-by-hand).
 
-## Prepare the update
+Do not run the normal installer command again to update. It does not update the emulator or the client. It does fetch Atom CMS again and rewrite the web server configuration.
+
+## Update with plusemu-update
+
+The first time, install the command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo bash -s -- update
+```
+
+This also runs the first update. After that, run:
+
+```bash
+sudo plusemu-update
+```
+
+The command:
+
+1. Shows the installed and newest versions of PlusEMU and Volt, then asks before it changes anything.
+2. Downloads and checks the new releases.
+3. Backs up the database, the emulator, and the client to `/var/backups/plusemu/`. It keeps the 3 newest backups.
+4. Installs the new versions and applies the database migrations.
+5. Keeps your `Config/` and `configuration/` files and files you added. It adds new settings and keeps the values you changed.
+6. Restores the backup automatically if a step fails.
+
+When the emulator is updated, players are disconnected for about a minute. Players get the new client when they reload the hotel page. The command does not update Atom CMS.
+
+| Option | What it does |
+| --- | --- |
+| `--check` | Shows the available updates and changes nothing. |
+| `--yes` | Skips the "Update now?" question. |
+| `--with-assets` | Also updates the stock hotel files: furniture, clothing, effects, badges, and texts (about 550 MB). Files you added stay. |
+| `--rollback` | Restores the newest backup. |
+
+`--rollback` also restores the database. Game progress since that backup is lost. Before it restores, the command backs up the current state, so you can run `--rollback` again to undo it.
+
+The update log is `/var/log/plusemu-update.log`. Remove passwords before you share it.
+
+## Update by hand
+
+Update the emulator from a [PlusEMU release](https://github.com/plus-emulator/PlusEMU/releases).
+
+### Prepare the update
 
 1. Read the release notes for client, website, and configuration requirements.
 2. Download the archive for your system: `plusemu-linux-x64.tar.gz`, `plusemu-linux-arm64.tar.gz`, or `plusemu-win-x64.zip`.
@@ -31,7 +73,7 @@ Extract the release into a separate directory. Compare its `Config/config.json` 
 
 Replace the installed executable and the `snowstorm/` directory with the new ones. Compare `Config/figuredata.xml` with the release copy. Keep the previous files with your backup. On Linux, preserve executable permissions and allow the `plusemu` service account to read the new file.
 
-## Start the new version
+### Start the new version
 
 On Linux:
 

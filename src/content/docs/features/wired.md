@@ -31,6 +31,20 @@ Wired Label, Wired Link, and Room Linker support more complex room setups. Leade
 
 Available boxes depend on the emulator version, catalogue, and client assets. A box needs a matching furniture definition and editor, as well as server support.
 
+Players can buy the Wired boxes that Habbo sells. Boxes that Habbo does not sell are on the staff-only **Wired (staff)** catalogue page. This page needs the `catalog.pages.administrator` permission, and catalogue search does not show its items. Database migrations create the page and move the boxes when you update.
+
+## Open the Wired menu
+
+Type one of these commands in the room chat:
+
+| Command | Opens |
+| --- | --- |
+| `:wf` or `:wired` | The Wired menu on its current tab |
+| `:var` or `:variables` | The variables tab |
+| `:inspect` or `:inspection` | The inspection tab |
+
+The monitor, variables, and inspection tabs show the data that the emulator sends. If you cannot read Wired in the room, the client shows an alert instead.
+
 ## Hide Wired furniture
 
 The room owner, or staff who can manage any room, can type:
