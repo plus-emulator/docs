@@ -7,45 +7,68 @@ sidebar:
 
 To see what changed in each release, read the [changelog](/changelog/).
 
-On a Linux hotel set up with the installer, use the `plusemu-update` command. On Windows, or for a manual installation, [update by hand](#update-by-hand).
+On a hotel set up with the installer, use the `plusemu-update` command on Linux and on Windows. For a manual installation, [update by hand](#update-by-hand).
 
-Do not run the normal installer command again to update. It does not update the emulator or the client. It does fetch Atom CMS again and rewrite the web server configuration.
+Running the normal installer command again does not update the emulator or the client. It does install a newer hotel files pack when one exists, fetches Atom CMS again, and rewrites the web server configuration.
 
 ## Update with plusemu-update
 
-The first time, install the command:
+The first time, install the command. On Linux:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo bash -s -- update
 ```
 
-This also runs the first update. After that, run:
+On Windows, in an Administrator PowerShell:
 
-```bash
-sudo plusemu-update
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.ps1))) -Update
 ```
+
+This also runs the first update. After that, run `sudo plusemu-update` on Linux or `plusemu-update` on Windows.
 
 The command:
 
-1. Shows the installed and newest versions of PlusEMU and Volt, then asks before it changes anything.
-2. Downloads and checks the new releases.
-3. Backs up the database, the emulator, and the client to `/var/backups/plusemu/`. It keeps the 3 newest backups.
+1. Shows the installed and newest versions of PlusEMU, Volt, and the hotel files, then asks before it changes anything.
+2. Downloads and checks the new releases and the hotel files pack.
+3. Backs up the database, the emulator, the client, and the hotel files to `/var/backups/plusemu/` on Linux or `C:\ProgramData\PlusEMU\backups\` on Windows. It keeps the 3 newest backups.
 4. Installs the new versions and applies the database migrations.
-5. Keeps your `Config/` and `configuration/` files and files you added. It adds new settings and keeps the values you changed.
-6. Restores the backup automatically if a step fails.
+5. Installs the newest hotel files pack when it changed: furniture, clothing, effects, badges, texts, icons, and sounds (about 550 MB). Stock files are replaced. Files you added stay. The emulator's `Config/figuredata.xml` is replaced by the release copy that matches the pack.
+6. Keeps your `Config/` and `configuration/` files and files you added. It adds new settings and keeps the values you changed.
+7. Restores the backup automatically if a step fails.
 
 When the emulator is updated, players are disconnected for about a minute. Players get the new client when they reload the hotel page. The command does not update Atom CMS.
 
-| Option | What it does |
-| --- | --- |
-| `--check` | Shows the available updates and changes nothing. |
-| `--yes` | Skips the "Update now?" question. |
-| `--with-assets` | Also updates the stock hotel files: furniture, clothing, effects, badges, and texts (about 550 MB). Files you added stay. |
-| `--rollback` | Restores the newest backup. |
+| Linux | Windows | What it does |
+| --- | --- | --- |
+| `--check` | `-Check` | Shows the available updates and changes nothing. |
+| `--yes` | `-Yes` | Skips the "Update now?" question. |
+| `--assets` | `-Assets` | Updates the hotel files only, without stopping the emulator. See below. |
+| `--rollback` | `-Rollback` | Restores the newest backup. |
+
+`--with-assets` from older guides is still accepted and does nothing. The hotel files are part of every update.
 
 `--rollback` also restores the database. Game progress since that backup is lost. Before it restores, the command backs up the current state, so you can run `--rollback` again to undo it.
 
-The update log is `/var/log/plusemu-update.log`. Remove passwords before you share it.
+The update log is `/var/log/plusemu-update.log` on Linux or `C:\ProgramData\PlusEMU\update.log` on Windows. Remove passwords before you share it.
+
+### Add missing hotel files only
+
+To get new stock content without any downtime, run:
+
+```bash
+sudo plusemu-update --assets
+```
+
+On Windows: `plusemu-update -Assets`.
+
+When the published pack changed, the command downloads it and adds every stock file your hotel does not have. Files you already have stay as they are, including stock files you edited. Only the `gamedata` folder (the index of clothing, effects, products, and texts) is replaced by the pack's copy. Your previous `gamedata` folder is kept in the backups folder as `gamedata-<version>`, so you can copy edited texts back by hand.
+
+The emulator keeps running. New clothing also needs the emulator's `Config/figuredata.xml` from the matching release. Run the full `plusemu-update` when new clothing does not show.
+
+### The hotel files pack
+
+Both installers download `hotel-files.tar.gz` from the [hotel-files release](https://github.com/plus-emulator/plusemu-installer/releases/tag/hotel-files). It is rebuilt from the asset bucket, so new assets reach every hotel with the next update. The first 12 characters of the pack's SHA-256 are the version the installer records in `versions.env` or `versions.json`.
 
 ## Update by hand
 

@@ -17,8 +17,8 @@ PlusEMU, Volt, and Atom CMS each have their own settings. The installer connects
 | Website settings | `/var/www/hotel/cms/.env` | `C:\Hotel\cms\.env` |
 | Saved installer answers and credentials | `/etc/plusemu/hotel.env` | `C:\ProgramData\PlusEMU\hotel.json` |
 | Installer log | `/var/log/plusemu-install.log` | `C:\ProgramData\PlusEMU\install.log` |
-| Installed versions | `/etc/plusemu/versions.env` | Not used |
-| [Update](/getting-started/updates/) backups and log | `/var/backups/plusemu/`, `/var/log/plusemu-update.log` | Not used |
+| Installed versions | `/etc/plusemu/versions.env` | `C:\ProgramData\PlusEMU\versions.json` |
+| [Update](/getting-started/updates/) backups and log | `/var/backups/plusemu/`, `/var/log/plusemu-update.log` | `C:\ProgramData\PlusEMU\backups\`, `C:\ProgramData\PlusEMU\update.log` |
 
 For a manual installation, `Config/config.json` is relative to the emulator's working directory. Logging uses `Config/nlog.config`.
 

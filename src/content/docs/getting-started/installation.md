@@ -48,7 +48,7 @@ To choose the advanced guide, use `sudo bash install.sh --guide-mode advanced` o
 curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo env PLUSEMU_GUIDE_MODE=advanced bash
 ```
 
-The installer saves the choice and reuses it when you run it again.
+The installer saves the choice and reuses it when you run it again. A second run keeps the installed emulator and client, and installs a newer hotel files pack when one exists. Files you added to `hotel-files` stay.
 
 ### Save your login details
 
