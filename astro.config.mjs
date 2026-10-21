@@ -23,6 +23,7 @@ export default defineConfig({
         { label: 'Get started', items: [{ autogenerate: { directory: 'getting-started' } }] },
         { label: 'Administration', items: [{ autogenerate: { directory: 'administration' } }] },
         { label: 'Features', items: [{ autogenerate: { directory: 'features' } }] },
+        { label: 'Changelog', collapsed: true, items: [{ autogenerate: { directory: 'changelog' } }] },
         { label: 'Use with AI', slug: 'using-these-docs' },
       ],
       head: [
