@@ -5,6 +5,8 @@ sidebar:
   order: 3
 ---
 
+To see what changed in each release, read the [changelog](/changelog/).
+
 On a Linux hotel set up with the installer, use the `plusemu-update` command. On Windows, or for a manual installation, [update by hand](#update-by-hand).
 
 Do not run the normal installer command again to update. It does not update the emulator or the client. It does fetch Atom CMS again and rewrite the web server configuration.
