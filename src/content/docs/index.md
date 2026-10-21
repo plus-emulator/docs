@@ -15,6 +15,7 @@ Use these guides to set up a hotel, manage staff access, and configure the main 
 | Run PlusEMU for the first time | [Install your hotel](/getting-started/installation/) |
 | Connect the database and client | [Configuration](/getting-started/configuration/) |
 | Install a new release | [Update PlusEMU](/getting-started/updates/) |
+| See what changed | [Changelog](/changelog/) |
 | Understand ranks and permissions | [Ranks and permissions](/administration/ranks-and-permissions/) |
 | Give or remove staff access | [Assign and remove roles](/administration/manage-roles/) |
 | Add a permission to a feature | [Create roles and permissions](/administration/custom-permissions/) |
@@ -26,6 +27,9 @@ Use these guides to set up a hotel, manage staff access, and configure the main 
 - [Wired](/features/wired/) lets room builders connect triggers, conditions, and effects without writing server code.
 - [Rooms and building](/features/rooms/) covers room settings, building tools, room games, and community features.
 - [Catalogue and economy](/features/economy/) covers the catalogue, currencies, trading, and other ways to exchange items.
+- [Collectibles](/features/collectibles/) covers the Collectibles hub and avatar collectibles.
+- [Pet companions](/features/pet-companions/) are small pets that players buy in the catalogue and wear with their look.
+- [Avatar effects](/features/avatar-effects/) covers buying, wearing, and selling effects, and effect boxes.
 
 The [ranks and permissions guide](/administration/ranks-and-permissions/) explains how access works. Read [Assign and remove roles](/administration/manage-roles/) to give or remove access. Read [Create roles and permissions](/administration/custom-permissions/) to define a new role or permission.
 
@@ -37,6 +41,6 @@ The [installation guide](/getting-started/installation/) lists what you need bef
 
 ## Source and releases
 
-These guides focus on the current [PlusEMU project](https://github.com/plus-emulator/PlusEMU). Older forks and releases may use different commands or settings. Use the [release notes](https://github.com/plus-emulator/PlusEMU/releases) when you update an existing hotel.
+These guides focus on the current [PlusEMU project](https://github.com/plus-emulator/PlusEMU). Older forks and releases may use different commands or settings. Read the [changelog](/changelog/) when you update an existing hotel.
 
 For a language model or another tool, use the [Markdown pages and complete text export](/using-these-docs/).
