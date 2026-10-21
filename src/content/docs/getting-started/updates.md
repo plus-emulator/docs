@@ -1,6 +1,6 @@
 ---
 title: Update PlusEMU
-description: Update PlusEMU and Volt with plusemu-update or by hand, and understand database migrations and backups.
+description: Update PlusEMU, Volt and the hotel files with plusemu-update on Linux and Windows, or by hand.
 sidebar:
   order: 3
 ---
@@ -114,38 +114,10 @@ Start-Service PlusEMU
 Get-Content C:\Hotel\emulator\service\shawl_for_PlusEMU_rCURRENT.log -Tail 50 -Wait
 ```
 
-PlusEMU applies pending database migrations before loading the hotel. With the default settings, it writes a full database backup first and stops if that backup fails.
+PlusEMU applies pending database migrations before loading the hotel. With the default settings, it writes a full database backup first and stops if that backup fails. Read [database migrations](/getting-started/migrations/) for details.
 
 After startup, sign in, enter a room, and open the catalogue. Check the log for migration or configuration errors.
 
 If you also update Volt, preserve its hotel configuration and restart the camera renderer so it loads the new `camera.html` build.
 
-## Inspect migrations separately
-
-To see migration status, run the new executable from the directory containing your installed `Config/`. On Linux, run it as the `plusemu` service account, because only that account can read `Config/config.json`:
-
-```bash
-cd /var/www/hotel/emulator
-sudo -u plusemu ./"Plus Emulator" --migrate-status
-```
-
-On Windows, use an Administrator PowerShell:
-
-```powershell
-cd C:\Hotel\emulator
-& '.\Plus Emulator.exe' --migrate-status
-```
-
-The status command changes nothing. To apply pending migrations and exit without starting the hotel, use `--migrate` instead. Keep the emulator service stopped while you run it. On Linux, also run `--migrate` as `plusemu`, so later backups can write to the backup directory.
-
-Migration scripts are compiled into the executable. PlusEMU records applied migrations in `schema_migrations`. The release also includes `Database/Migrations/` and `Database/FreshInstall.sql` for reference.
-
-For a database from before migration 60, set `Database.Migrations.FurnidataFile` to the hotel's existing `FurnitureData.json` if the emulator stops and asks for it.
-
-## Recover from a failed migration
-
-Read the migration filename and failed statement in the log. Fix the cause before starting again, or restore the database backup and matching previous executable.
-
-Database schema changes can remain after a failed migration. Replacing the executable alone does not restore the previous database state.
-
-The default backup directory is `backups` under the emulator's working directory. `Database.Migrations.BackupDirectory` can change it. These migration backups do not replace regular backups of the whole hotel.
+For migration status, applying migrations by hand, and recovering from a failed migration, see [database migrations](/getting-started/migrations/).
