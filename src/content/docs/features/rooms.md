@@ -96,7 +96,7 @@ The command changes placement height for your current room user. It does not gra
 
 ## Room backgrounds
 
-A room background is a furniture item that shows an image in the room. To set the image, the user needs the `room.item_save_branding_items` permission and must own the room. Staff with `room.owner_any` can also set it. In the default roles, only Developer and Owner have this permission. You can give it to another role, for example a custom "Room builder" role. See [grant an existing permission](/administration/custom-permissions/#grant-an-existing-permission).
+A room background is a furniture item that shows an image in the room. To set the image, the user needs the `room.item_save_branding_items` permission and must own the room. Staff with `room.owner.any` can also set it. In the default roles, only Developer and Owner have this permission. You can give it to another role, for example a custom "Room builder" role. See [grant an existing permission](/administration/custom-permissions/#grant-an-existing-permission).
 
 Click the background in the room. The fields `imageUrl`, `offsetX`, `offsetY`, and `offsetZ` show in the info stand. Users without the permission do not see these fields.
 
