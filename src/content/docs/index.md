@@ -19,6 +19,7 @@ Ask questions, get help and talk to other hotel owners: **[Join the PlusEMU Disc
 | Run PlusEMU for the first time | [Install your hotel](/getting-started/installation/) |
 | Connect the database and client | [Configuration](/getting-started/configuration/) |
 | Install a new release | [Update PlusEMU](/getting-started/updates/) |
+| Install or update the Volt client by hand | [Set up the Volt client](/getting-started/volt-client/) |
 | See what changed | [Changelog](/changelog/) |
 | Understand ranks and permissions | [Ranks and permissions](/administration/ranks-and-permissions/) |
 | Give or remove staff access | [Assign and remove roles](/administration/manage-roles/) |
