@@ -11,7 +11,10 @@ export default defineConfig({
       description: 'Set up your PlusEMU hotel, manage access, and configure its features.',
       logo: { src: './src/assets/logo.svg' },
       favicon: '/favicon.svg',
-      social: [{ icon: 'github', label: 'PlusEMU on GitHub', href: 'https://github.com/plus-emulator' }],
+      social: [
+        { icon: 'discord', label: 'Join our Discord', href: 'https://discord.gg/D7B42G7Rxk' },
+        { icon: 'github', label: 'PlusEMU on GitHub', href: 'https://github.com/plus-emulator' },
+      ],
       customCss: ['./src/styles/custom.css'],
       components: {
         PageTitle: './src/components/PageTitle.astro',

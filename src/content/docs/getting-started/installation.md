@@ -80,6 +80,10 @@ If installation stops, read the error in the installer log, fix its cause, and r
 
 For Cloudflare connection errors, use the troubleshooting section in the generated guide. It contains the paths and commands for your server.
 
+## Get help
+
+Stuck? Ask in our Discord: **[Join the PlusEMU Discord](https://discord.gg/D7B42G7Rxk)**.
+
 ## Next steps
 
 Read [configuration](/getting-started/configuration/) for file locations and service commands. Camera rendering needs a [separate setup](/features/camera-setup/). To update the hotel later, see [update PlusEMU](/getting-started/updates/).

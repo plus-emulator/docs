@@ -8,6 +8,10 @@ PlusEMU is a Habbo Hotel server emulator written in C# on .NET 10. It runs your 
 
 Use these guides to set up a hotel, manage staff access, and configure the main features.
 
+:::tip[Need help? Join our Discord]
+Ask questions, get help and talk to other hotel owners: **[Join the PlusEMU Discord](https://discord.gg/D7B42G7Rxk)**
+:::
+
 ## Start here
 
 | Your task | Guide |
