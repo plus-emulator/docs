@@ -5,13 +5,13 @@ sidebar:
   order: 6
 ---
 
-Volt is the web client of your hotel. The [installer](/getting-started/installation/) sets it up for you. Use this page when you install or update Volt by hand.
+Volt is the web client for PlusEMU hotels. The [installer](/getting-started/installation/) sets it up. Use this page to install, configure, build or update Volt manually.
 
-Volt is built on [Volt-Renderer](https://github.com/plus-emulator/Volt-Renderer). A hotel owner does not install the renderer on its own. It is already inside the Volt release.
+Volt is built on [Volt-Renderer](https://github.com/plus-emulator/Volt-Renderer), which is bundled into every Volt release.
 
 ## Install a release
 
-This is the easiest way. You do not build anything.
+Recommended. No build step is needed.
 
 1. Download `volt-client.zip` from the latest [Volt release](https://github.com/plus-emulator/Volt/releases).
 2. Unzip it into the folder of your web server.
