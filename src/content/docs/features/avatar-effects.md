@@ -1,6 +1,6 @@
 ---
 title: Avatar effects
-description: How players buy, wear and lose avatar effects, how to sell effects in the catalogue, effect boxes, and the staff effect commands.
+description: How players buy, wear and lose avatar effects, how to sell effects in the catalogue, effect boxes, the staff effect commands, and how to turn off the staff badge.
 sidebar:
   order: 8
 ---
@@ -177,6 +177,30 @@ When staff enter a room, PlusEMU puts a staff effect on them:
 - Users with the `ambassador` permission and without `moderation.tool` get effect 178.
 
 `:forced_effects` turns this on or off for your own account. PlusEMU saves the choice in `users_settings.disable_forced_effects`. The command needs `command.forced_effects`. The fresh database gives it to all staff roles.
+
+### Turn off the staff badge for the whole hotel
+
+Effect 102 is the **Habbo Staff** badge that floats above the avatar. Two settings in the `server_settings` table pick the effect for every account:
+
+| Key | Default | Who gets it |
+| --- | --- | --- |
+| `room.forced_effect.staff` | `102` | Users with `moderation.tool` |
+| `room.forced_effect.ambassador` | `178` | Ambassadors without `moderation.tool` |
+
+Set a key to `0` to turn that effect off. Any other effect id puts that effect on instead. These settings exist from PlusEMU v1.0.21.
+
+To turn off the staff badge for all staff:
+
+1. Run this SQL:
+
+   ```sql
+   UPDATE server_settings SET `value` = '0' WHERE `key` = 'room.forced_effect.staff';
+   ```
+
+2. In the hotel, run `:update settings`, or restart the emulator.
+3. Staff leave the room and enter it again. A badge that is already on an avatar stays until the next room entry.
+
+To turn the badge back on, set the value to `102` again. Staff who turned forced effects off with `:forced_effects` still get no effect.
 
 ## Games and Wired
 
