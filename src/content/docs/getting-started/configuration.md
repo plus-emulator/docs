@@ -19,6 +19,9 @@ PlusEMU, Volt, and Atom CMS each have their own settings. The installer connects
 | Installer log | `/var/log/plusemu-install.log` | `C:\ProgramData\PlusEMU\install.log` |
 | Installed versions | `/etc/plusemu/versions.env` | `C:\ProgramData\PlusEMU\versions.json` |
 | [Update](/getting-started/updates/) backups and log | `/var/backups/plusemu/`, `/var/log/plusemu-update.log` | `C:\ProgramData\PlusEMU\backups\`, `C:\ProgramData\PlusEMU\update.log` |
+| [Nightly backups](/getting-started/backups-and-health/) and log | `/var/backups/plusemu/nightly/`, `/var/log/plusemu-backup.log` | `C:\ProgramData\PlusEMU\backups\nightly\`, `C:\ProgramData\PlusEMU\backup.log` |
+| [Health check](/getting-started/backups-and-health/#health-check-and-discord-alerts) log | `/var/log/plusemu-health.log` | `C:\ProgramData\PlusEMU\health.log` |
+| Setup guide | `/var/www/hotel/setup-guide/index.html` | `C:\Hotel\setup-guide\index.html` |
 
 For a manual installation, `Config/config.json` is relative to the emulator's working directory. Logging uses `Config/nlog.config`.
 
@@ -58,13 +61,15 @@ Get-Content C:\Hotel\emulator\service\shawl_for_PlusEMU_rCURRENT.log -Tail 50 -W
 
 ## Client connection and furniture data
 
-Volt reads `renderer-config.json` and `ui-config.json` from its configuration directory. The installer sets `socket.url` in `renderer-config.json` to your public WebSocket address. For a manual installation, use the `Nitro` address, for example `ws://127.0.0.1:2096`. In production, put a TLS proxy in front of it and use `wss://`.
+Volt reads `renderer-config.json` and `ui-config.json` from its configuration directory. The installer sets `socket.url` in `renderer-config.json` to your public WebSocket address. On a [local install](/getting-started/local-install/), that address is `ws://localhost/ws`, and every other address is `http://localhost`. For a manual installation, use the `Nitro` address, for example `ws://127.0.0.1:2096`. In production, put a TLS proxy in front of it and use `wss://`.
 
 Current PlusEMU builds generate furniture data from the database. When the emulator serves furniture data during installation, the installer sets `furnidata.url` in `renderer-config.json` to:
 
 ```text
 https://your-domain/api/gamedata/furnidata
 ```
+
+On a local install, it is `http://localhost/api/gamedata/furnidata`.
 
 To check the emulator directly on the server:
 
