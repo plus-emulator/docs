@@ -25,7 +25,7 @@ On Windows, in an Administrator PowerShell:
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.ps1))) -Update
 ```
 
-This also runs the first update. After that, run `sudo plusemu-update` on Linux or `plusemu-update` on Windows.
+This also runs the first update. After that, run `sudo plusemu-update` on Linux or `plusemu-update` on Windows. On a [local install](/getting-started/local-install/), the command works the same way and keeps the hotel at `http://localhost`.
 
 The command:
 
