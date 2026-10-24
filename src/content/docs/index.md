@@ -36,6 +36,7 @@ Ask questions, get help and talk to other hotel owners: **[Join the PlusEMU Disc
 - [Pet companions](/features/pet-companions/) are small pets that players buy in the catalogue and wear with their look.
 - [Avatar effects](/features/avatar-effects/) covers buying, wearing, and selling effects, and effect boxes.
 - [Add new furniture](/features/add-furniture/) shows how to add a furniture item. Furniture data is generated from the database.
+- [Add new clothing](/features/add-clothing/) shows how to add clothing, sell it in the catalogue, and how the wardrobe checks outfits.
 
 The [ranks and permissions guide](/administration/ranks-and-permissions/) explains how access works. Read [Assign and remove roles](/administration/manage-roles/) to give or remove access. Read [Create roles and permissions](/administration/custom-permissions/) to define a new role or permission.
 
