@@ -2,7 +2,7 @@
 title: Before the first release
 description: What changed when PlusEMU and Octane were forked into PlusEMU and Volt, before the first public release.
 sidebar:
-  order: 6
+  order: 7
 ---
 
 Volt is our fork of Octane, which is a fork of Nitro. PlusEMU is our fork of [PlusEMU by 80O](https://github.com/80O/PlusEMU). This page sums up the work done before the first public release on 7 October 2026. For the changes after that, see [1-7 October 2026: first release](/changelog/2026-10-01/) and the newer pages.
