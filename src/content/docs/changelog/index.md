@@ -17,16 +17,17 @@ The newest changes come first. Each page covers a few days and names the version
 
 ## Latest versions
 
-- [PlusEMU 1.0.24](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.24)
-- [Volt 3.5.1](https://github.com/plus-emulator/Volt/releases/tag/client-v3.5.1-01a9ea4)
-- [Volt Renderer 2.1.0](https://github.com/plus-emulator/Volt-Renderer/releases/tag/renderer-v2.1.0-f289445)
-- [Installer 1.7.0](https://github.com/plus-emulator/plusemu-installer/releases/tag/v1.7.0)
+- [PlusEMU 1.0.25](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.25)
+- [Volt 3.5.1](https://github.com/plus-emulator/Volt/releases/tag/client-v3.5.1-83b02ae)
+- [Volt Renderer 2.1.0](https://github.com/plus-emulator/Volt-Renderer/releases/tag/renderer-v2.1.0-c203a72)
+- [Installer 2.0.0](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.0.0)
 
 To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
 ## All changes
 
-- [24-25 October 2026](/changelog/2026-10-24/): PlusEMU 1.0.24.
+- [27-30 October 2026](/changelog/2026-10-27/): PlusEMU 1.0.25, Volt 3.5.1 (`83b02ae`), Volt Renderer 2.1.0 (`c203a72`).
+- [24-25 October 2026](/changelog/2026-10-24/): PlusEMU 1.0.24, installer 2.0.0.
 - [20-23 October 2026](/changelog/2026-10-20/): PlusEMU 1.0.2 to 1.0.23, Volt 3.5.1, installer 1.4.0 to 1.7.0.
 - [18-19 October 2026](/changelog/2026-10-18/): PlusEMU 1.0.0 and 1.0.1, installer 1.3.0.
 - [15-17 October 2026](/changelog/2026-10-15/): the public launch, Builders Club, AIR client support, Volt Renderer 2.1.0, installer 1.2.1.
