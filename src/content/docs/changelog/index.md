@@ -18,15 +18,15 @@ The newest changes come first. Each page covers a few days and names the version
 ## Latest versions
 
 - [PlusEMU 1.0.25](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.25)
-- [Volt 3.5.1](https://github.com/plus-emulator/Volt/releases/tag/client-v3.5.1-83b02ae)
-- [Volt Renderer 2.1.0](https://github.com/plus-emulator/Volt-Renderer/releases/tag/renderer-v2.1.0-c203a72)
+- [Volt 1.0.0](https://github.com/plus-emulator/Volt/releases/tag/v1.0.0)
+- [Volt Renderer 1.0.0](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.0)
 - [Installer 2.0.0](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.0.0)
 
 To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
 ## All changes
 
-- [27-30 October 2026](/changelog/2026-10-27/): PlusEMU 1.0.25, Volt 3.5.1 (`83b02ae`), Volt Renderer 2.1.0 (`c203a72`).
+- [27-30 October 2026](/changelog/2026-10-27/): PlusEMU 1.0.25, Volt 1.0.0, Volt Renderer 1.0.0.
 - [24-25 October 2026](/changelog/2026-10-24/): PlusEMU 1.0.24, installer 2.0.0.
 - [20-23 October 2026](/changelog/2026-10-20/): PlusEMU 1.0.2 to 1.0.23, Volt 3.5.1, installer 1.4.0 to 1.7.0.
 - [18-19 October 2026](/changelog/2026-10-18/): PlusEMU 1.0.0 and 1.0.1, installer 1.3.0.
@@ -39,7 +39,9 @@ To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
 PlusEMU used a date in its version until 19 October 2026, for example `v2026.10.17-1c63590`. Since then it uses normal version numbers, starting at 1.0.0.
 
-Volt and Volt Renderer releases carry the version and the build, for example `client-v3.5.1-01a9ea4`.
+Volt and Volt Renderer use normal version numbers since 30 October 2026, starting at 1.0.0. Before that, their releases carried the version and the build, for example `client-v3.5.1-83b02ae`. Volt 1.0.0 is the next release after `client-v3.5.1-83b02ae`, and `plusemu-update` installs it like any other update.
+
+Each part counts its own version, so the numbers do not have to match. Use the newest release of each part. This changelog says when parts must be updated together.
 
 All releases are on GitHub:
 
