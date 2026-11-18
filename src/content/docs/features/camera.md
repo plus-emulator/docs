@@ -71,6 +71,7 @@ These are the current fresh-install values. Existing hotels can have different v
 | `camera.render.edit.daily` | `200` | Effect renders per account per UTC day |
 | `camera.thumbnail.cooldown` | `15` | Seconds between thumbnail captures |
 | `camera.competition.enabled` | `0` | Competition submissions are disabled |
+| `camera.competition.daily` | `3` | Competition entries per account per day |
 
 `camera.price.points.type` and `camera.price.publish.points.type` must stay `0`, meaning duckets. Other point types are rejected.
 

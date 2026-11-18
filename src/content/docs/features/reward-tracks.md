@@ -18,6 +18,34 @@ A reward track is a season of tasks. Players do tasks, collect points, and claim
 
 Only tracks with `enabled = 1` load. Leave `starts_at` and `ends_at` empty (`NULL`) for a track without a start or end date.
 
+### Premium settings
+
+| `reward_tracks` column | Default | What it does |
+| --- | --- | --- |
+| `has_premium` | `0` | `1` gives the track a premium part. |
+| `premium_cost_credits` | `0` | The credits the premium part costs. |
+| `premium_cost_diamonds` | `0` | The diamonds the premium part costs. |
+| `premium_instant_points` | `0` | Points the player gets at once when buying premium. |
+| `premium_task_points_boost` | `0` | A number that PlusEMU sends to the client to show. |
+
+Tasks, task levels and prizes with `premium = 1` are only for players who bought premium.
+
+### Tasks and levels
+
+Each task in `reward_track_tasks` has a `track_id`, an `id`, an `action_type`, an optional `parameter` and a `sort_order`. Each level of a task in `reward_track_task_levels` has a `level`, the `required_count` of actions and the `points_reward`.
+
+### Task actions
+
+`action_type` is one of these:
+
+`chat_with_someone`, `enter_other_users_room`, `place_item`, `give_respect`, `change_motto`, `change_figure`, `buy_from_catalogue`, `create_room`, `request_friend`, `set_relationship_status`, `move_item`, `rotate_item`, `switch_item_state`, `publish_picture`, `dance`, `wave`, `find_hand_item`, `use_habbicon`, `send_messenger_message`, `send_messenger_invite`, `pet_level`, `pet_respect`, `wear_badge`, `replenish_respect`, `friend_furni_locked`, `swim`, `pet_eat`, `plant_monster_plant`, `treat_monster_plant`, `follow_friend`, `teleport`, `claim_daily_task`, `custom_wired_action`.
+
+[Daily tasks](/features/daily-tasks/) use the same names, plus `show_sign`.
+
+### Open the window
+
+The link event `reward_track/open` opens the reward track window in Volt. `reward_track/toggle` and `reward_track/hide` also work.
+
 PlusEMU loads the tracks when it starts. Restart the emulator after you change these tables.
 
 ## Prize format

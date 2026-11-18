@@ -41,7 +41,7 @@ Set your own database password and camera token (`Camera.Bearer`). Do not commit
 
 The installer keeps the emulator and database on local addresses. The web server forwards public client requests to the emulator.
 
-Changes to `Config/config.json` take effect after an emulator restart. Game settings stored in the `server_settings` database table work differently. You can reload them without a restart. Staff need both `command.update` and `command.update_configuration` to reload them with `:update settings`.
+Changes to `Config/config.json` take effect after an emulator restart. Game settings stored in the `server_settings` database table work differently. You can reload them without a restart. Staff need both `command.update` and `command.update_configuration` to reload them with `:update settings`. See the [server settings reference](/getting-started/server-settings/) for every key.
 
 ## Restart and inspect the emulator
 

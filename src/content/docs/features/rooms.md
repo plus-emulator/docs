@@ -135,8 +135,31 @@ PlusEMU includes Battle Banzai, Freeze, Football, Ice Tag, and SnowStorm. Room g
 
 A working game needs the corresponding catalogue items and client assets. The presence of an emulator game handler does not add missing assets to an existing hotel.
 
+## Room ads
+
+A room owner can promote a room. The ad shows in the navigator's room ads tab and in the room.
+
+- An ad runs for `room.promotion.lifespan` minutes. The default is 120. Reload the setting with `:update settings`.
+- Buying again while an ad runs adds 2 hours to it.
+- PlusEMU does not charge the price of the room ad offer. Ads are free.
+- The first ad gives the player the badge `RADZZ`.
+- The catalogue page has the link `room_ad` and the layout `roomads`.
+
+The categories of the ads are rows in `navigator_categories` with `category_type = 'promotion_category'`. Fresh databases have 9 of them. To add one:
+
+```sql
+SELECT MAX(id) + 1 FROM navigator_categories;
+
+INSERT INTO navigator_categories (id, category, category_identifier, public_name, category_type, order_id)
+VALUES (100, 'roomads_view', 'promotion_acme', 'Acme events', 'promotion_category', 10);
+```
+
+The `id` column does not count up by itself. Use a free number, such as the result of the first query.
+
+Then run `:update navigator`. It needs `command.update` and `command.update_navigator`.
+
 ## Community features
 
-Friends and messenger support conversations outside the current room. Groups and forums support shared communities. Room polls and word quizzes provide activities inside rooms.
+Friends and messenger support conversations outside the current room. [Groups and forums](/features/groups/) support shared communities. Room polls and word quizzes provide activities inside rooms.
 
-Achievements, talent tracks, quests, and campaigns provide progression. Their visible content depends on the hotel's database and configuration.
+[Achievements, talents and quests](/features/achievements-and-quests/), [daily tasks](/features/daily-tasks/), [reward tracks](/features/reward-tracks/) and the [campaign calendar](/features/campaign-calendar/) provide progression. [Bots](/features/bots/) can serve drinks and talk in rooms.
