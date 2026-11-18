@@ -38,6 +38,35 @@ All files are in the `configuration/` folder.
 
 Text files (`UITexts_*.jsonc.example`, `QuestUITexts.jsonc.example`) and `hotlooks.example` are in the same folder. Copy them and remove `.example` from the name to use them.
 
+### Feature settings
+
+These settings turn on or tune single features. New installs get the values below. `plusemu-update` adds a missing setting with its default, and keeps the value your file already has.
+
+| File | Setting | What it does | Default |
+| --- | --- | --- | --- |
+| `renderer-config.json` | `habbicons.asset.hash` | The folder with the habbicon images. See [habbicons](#habbicons). | `habbo-225e1f8a` |
+| `renderer-config.json` | `system.fps.max` | The highest frame rate. See [frame rate](#frame-rate). | `60` |
+| `ui-config.json` | `recycler.number_of_slots` | The number of Furni-Matic slots. Keep it equal to the server. See [Furni-Matic](/features/economy/#furni-matic). | `8` |
+| `ui-config.json` | `image.library.dailytasks.url` | Where the daily task icons are. Without it, Volt uses the `dailytasks/` folder under `image.library.url`. | `${image.library.url}dailytasks/` |
+
+### Habbicons
+
+Volt ships two habbicon folders in `habbicons/`: `default` and `habbo-225e1f8a`. Only `habbo-225e1f8a` has the zombie habbicons, which are reward track prizes. Use it:
+
+```json
+"habbicons.asset.hash": "habbo-225e1f8a"
+```
+
+`plusemu-update` keeps your own value of this setting. A hotel installed before 18 November 2026 still has `default`, so change it by hand after you update Volt to 1.0.9.
+
+Since Volt 1.0.8 and Volt Renderer 1.0.4, `habbicons.json` uses Habbo's own format. If you made your own habbicon folder, start again from a copy of `habbo-225e1f8a`.
+
+### Frame rate
+
+Volt draws at most 60 frames per second. Change the default with `system.fps.max` in `renderer-config.json`.
+
+Players can change it for their own session with the `:fps` chat command, like in the AIR client. For example, `:fps 30` sets 30 frames per second. The value can be 5 to 10000. `:togglefps` turns the limit off and on.
+
 ## Connect to PlusEMU
 
 - **`socket.url`:** the WebSocket address of PlusEMU. It is the `Nitro` section in PlusEMU's `Config/config.json` (default port 2096). Use `ws://127.0.0.1:2096` on your own computer. Use `wss://` behind a TLS proxy on a live server.

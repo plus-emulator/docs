@@ -43,6 +43,21 @@ Keep your DNS records orange (**Proxied**) in Cloudflare. With a grey record, th
 - **SSH** lets root log in with a key only. SSH password login goes off only when your login uses an SSH key: this session, or the account that ran `sudo` has a key in `~/.ssh/authorized_keys`. Otherwise password login stays on, and the installer says so. The settings are in `/etc/ssh/sshd_config.d/10-plusemu.conf`. To turn password login off later, add your SSH key, log in with it, and run the installer again.
 - **Network settings** in `/etc/sysctl.d/90-plusemu.conf` turn on SYN cookies and raise the queues for new connections, so a flood of connections does not stop the server.
 
+### SSH key login
+
+With no SSH key yet, the installer can set one up and then turn SSH password login off. Run on the server:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo bash -s -- --setup-ssh
+```
+
+1. The installer explains how to make an SSH key on Windows or Linux.
+2. Paste your public key: the whole line from your `.pub` file. The installer adds it to your account.
+3. Keep the installer window open. Open a new window on your PC and log in with your key, with the command the installer shows.
+4. Answer `y` when the key login works. Password login then goes off.
+
+If the key login does not work, answer `n`. Password login stays on and the installer removes the key, so you are never locked out. For an unattended run, give the public key in `PLUSEMU_SSH_KEY`. `--setup-ssh` keeps the hotel and its database.
+
 ## Logins (Windows)
 
 An account locks for 10 minutes after 10 wrong passwords in 10 minutes. This is the default of new Windows versions. A lower limit would let an attacker keep the built-in Administrator locked out. The installer does not open or change RDP or SSH. On a domain controller, it leaves the lockout policy alone.

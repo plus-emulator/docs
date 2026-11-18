@@ -142,6 +142,6 @@ Stuck? Ask in our Discord: **[Join the PlusEMU Discord](https://discord.gg/D7B42
 
 ## Next steps
 
-Read [server protection](/getting-started/server-protection/) to see what the installer changed on the server, and [backups and health checks](/getting-started/backups-and-health/) for the nightly backups and alerts. [Configuration](/getting-started/configuration/) lists file locations and service commands. Camera rendering needs a [separate setup](/features/camera-setup/). To update the hotel later, see [update PlusEMU](/getting-started/updates/).
+Read [server protection](/getting-started/server-protection/) to see what the installer changed on the server, and [backups and health checks](/getting-started/backups-and-health/) for the nightly backups and alerts. [Configuration](/getting-started/configuration/) lists file locations and service commands. The installer also sets up the [camera](/features/camera/). To update the hotel later, see [update PlusEMU](/getting-started/updates/).
 
 For an emulator-only installation, use the [PlusEMU release archives](https://github.com/plus-emulator/PlusEMU/releases) and the [manual setup instructions](https://github.com/plus-emulator/PlusEMU#setup). The archives are self-contained and do not require a separate .NET installation.

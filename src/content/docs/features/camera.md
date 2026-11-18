@@ -9,7 +9,30 @@ The camera takes room photos, applies effects, and creates wall photographs. Roo
 
 PlusEMU sends a snapshot of the room to a private renderer. That renderer uses `camera.html` from the Volt build. Players choose the viewpoint and effects, but cannot upload a replacement image through camera packets.
 
-The installer does not start this renderer. Fresh installs already enable the camera, but photos fail until the renderer runs. Follow [camera setup](/features/camera-setup/), or set `camera.enabled` to `0` until it is ready.
+Installer 2.3.0 and newer set up the renderer as a service. New hotels can take photos at once. To add the camera to a hotel that you installed earlier, update it:
+
+```bash
+sudo plusemu-update
+```
+
+If your hotel already runs the newest PlusEMU, set up only the camera:
+
+```bash
+sudo plusemu-update --install-camera
+```
+
+On Windows, run `plusemu-update -InstallCamera`. The camera needs PlusEMU 1.0.28 or newer.
+
+| | Linux | Windows |
+| --- | --- | --- |
+| Service | `plusemu-camera` | `PlusEMUCamera` |
+| Photos | `/var/www/hotel/camera` | `C:\Hotel\camera` |
+
+The service listens on `127.0.0.1` only. The photos are part of the nightly backup. `plusemu-update` restarts the camera service after each client update. When the camera cannot be set up, the installer warns you, and the rest of the hotel keeps working. To check the service on Linux, run `journalctl -u plusemu-camera -n 50`.
+
+On Ubuntu 23.10 and newer, the installer adds an AppArmor profile so the camera's browser can use its sandbox.
+
+For a manual installation, follow [camera setup](/features/camera-setup/), or set `camera.enabled` to `0` until the renderer runs. Fresh databases enable the camera, but photos fail until the renderer runs.
 
 ## Photos and thumbnails
 
