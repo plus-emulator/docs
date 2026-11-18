@@ -55,6 +55,36 @@ These settings are under `Database.Migrations` in `Config/config.json`.
 
 Use these two only when the startup check cannot place your database history. PlusEMU tells you when that happens.
 
+## MariaDB versions
+
+PlusEMU works with MariaDB 10.6, 10.11, and 11.5 or newer. Use MariaDB 11.5 or newer with PlusEMU 1.0.31 or newer only. Older releases can stop at a migration on these versions.
+
+The hotel database uses one collation: `utf8mb4_unicode_ci`. Columns that need exact matching use `utf8mb4_bin`. MariaDB 11.5 changed the server's default collation to `utf8mb4_uca1400_ai_ci`. A table created without a collation then gets the new default, and joins and foreign keys between two collations fail.
+
+Migration 162 fixes this on existing hotels:
+
+- It sets the database, every table, and every text column to `utf8mb4_unicode_ci`. It keeps `utf8mb4_bin` and ASCII columns as they are.
+- It changes only what differs. On a database that already has one collation, it changes nothing.
+- It keeps the data and the foreign keys.
+
+On a hotel whose tables drifted to another collation, migration 162 rebuilds those tables. This can take a while on large tables, and it locks each table while it works. Update such a hotel in a quiet moment, and stop other programs that write to the database, such as the website, during the update.
+
+If the new collation would make two rows equal in a unique key, migration 162 stops with the message `Collation change would duplicate a key in <table>.<key>`. Fix or remove the duplicate rows, then start PlusEMU again. The migration runs again from the start.
+
+To check your database before you update:
+
+```sql
+SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
+WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE'
+  AND TABLE_COLLATION <> 'utf8mb4_unicode_ci';
+
+SELECT TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = DATABASE() AND CHARACTER_SET_NAME <> 'ascii'
+  AND COLLATION_NAME NOT IN ('utf8mb4_unicode_ci', 'utf8mb4_bin');
+```
+
+When both queries return no rows, migration 162 rebuilds no tables.
+
 ## Recover from a failed migration
 
 Read the migration filename and failed statement in the log. Fix the cause before starting again, or restore the database backup and matching previous executable.

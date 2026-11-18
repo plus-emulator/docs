@@ -12,7 +12,7 @@ Every install made with the installer backs up the hotel every night and checks 
 Every night at 04:00, the backup saves what a download cannot bring back. It keeps the newest 7 backups, each in its own folder named by its time in UTC:
 
 - `database.sql.gz`: the whole `plus` database.
-- `hotel.tar.gz`: the emulator's `Config` folder, the client's `configuration` folder, the website's `.env` file and uploads (`cms/storage/app`), and the hotel's texts (`hotel-files/gamedata`).
+- `hotel.tar.gz`: the emulator's `Config` folder, the client's `configuration` folder, the website's `.env` file and uploads (`cms/storage/app`), the hotel's texts (`hotel-files/gamedata`), and the camera photos (`camera`).
 - `settings.tar.gz`: the saved answers, passwords, and versions. On Linux, also the HTTPS certificate in `/etc/ssl/plusemu`. On Windows, the certificate stays in the Windows certificate store.
 
 The backup leaves out what the installer or `plusemu-update` downloads again: the emulator and client programs and the stock hotel files. Furniture, clothes, or badges that you added to `hotel-files` yourself are not in the backup, so keep your own copy of them.

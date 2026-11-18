@@ -5,11 +5,13 @@ sidebar:
   order: 2
 ---
 
+Installer 2.3.0 and newer set up the camera for you. See [camera](/features/camera/). Use this guide for a manual installation, or to understand what the installer does.
+
 This guide uses a Linux installer layout. The camera renderer is a separate Node.js process. It needs the emulator, a current Volt build containing `camera.html`, and compatible renderer assets.
 
 ## Prepare the renderer files
 
-Get the source version that matches your emulator release. From a PlusEMU source checkout, run:
+Every PlusEMU release since 1.0.28 contains the renderer in the `CameraRenderer` folder. You can also take it from a PlusEMU source checkout of the same version. In that folder, run:
 
 ```bash
 cd CameraRenderer
@@ -29,7 +31,12 @@ If it is missing, deploy a compatible Volt build before continuing.
 
 ## Prepare compatible assets
 
-The renderer's local asset layout differs from the installer's public `hotel-files` layout. Do not point `CAMERA_ASSET_ROOT` at that directory without preparing the expected files.
+The renderer reads assets in one of two layouts. Choose it with `CAMERA_ASSET_LAYOUT`:
+
+- `hotel-files`: the installer's hotel files pack, with flat `assets/<kind>/*.hab` and `gamedata/*.json` folders. Point `CAMERA_ASSET_ROOT` at `/var/www/hotel/hotel-files`. The installer uses this layout.
+- `nitro`: the default. It needs the layout below.
+
+For the `nitro` layout, the renderer's local asset layout differs from the installer's public `hotel-files` layout. Do not point `CAMERA_ASSET_ROOT` at that directory without preparing the expected files.
 
 For the example below, place compatible assets under `/srv/plusemu-camera-assets` with this structure:
 

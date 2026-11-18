@@ -39,6 +39,60 @@ The marketplace lists eligible furniture for sale. Marketplace eligibility is se
 
 Gift purchases, crafting recipes, and recycler rewards depend on their own catalogue and database configuration.
 
+## Furni-Matic
+
+The Furni-Matic is the recycler. Players put furni in its slots and get a Mystery Box. The box holds a random prize: a furni or a speech bubble style.
+
+### Habbo's settings
+
+Migration 150 gives Habbo's Furni-Matic to every hotel that never set up its recycler:
+
+- 8 slots.
+- 10 Duckets for each use.
+- 10 seconds between two uses.
+- Habbo's 6 prize levels and prizes.
+
+A hotel that already set up its recycler keeps its own settings and prizes. If the prize furni are missing from the `furniture` table, the migration sets only the 8 slots.
+
+### The recycler tables
+
+| Table | What it holds |
+| --- | --- |
+| `recycler_settings` | One row with `id = 1`: `enabled`, `slots`, `cooldown_seconds` and `cost_duckets`. |
+| `recycler_levels` | One row per prize level: `level` (1 to 6) and `chance`. |
+| `recycler_prizes` | The prizes of each level: `level`, and `item_id` (a `furniture` ID) or `chat_style_id` (a speech bubble style). |
+
+A level with `chance` 400 gives about 1 box in 400. Level 1 must have `chance` 1. It gets all the boxes that the other levels do not get. Habbo's chances are 1, 4, 10, 40, 400 and 5000 for levels 1 to 6.
+
+The Furni-Matic shows as closed when the setup is not valid. It must have:
+
+- `enabled = 1`, 1 to 12 slots, 0 to 86400 seconds between uses, and 0 to 1000000 Duckets.
+- 1 to 6 levels, each with 1 to 500 prizes. Prize furni must be floor or wall furni with a sprite ID.
+- Exactly one Mystery Box in the `furniture` table: a floor furni named `matic_box` with sprite ID 4692 and interaction type `default`.
+- Chances that leave room for level 1. When the chances do not work, PlusEMU logs an error that starts with `Recycler level chances`.
+
+PlusEMU reads these tables each time a player opens the Furni-Matic, so a change works without a restart.
+
+### Client settings
+
+Volt reads three settings from `ui-config.json`. Keep them equal to the server values:
+
+| Setting | Server value | Habbo default |
+| --- | --- | --- |
+| `recycler.number_of_slots` | `recycler_settings.slots` | `8` |
+| `recycler.ducket_cost` | `recycler_settings.cost_duckets` | `10` |
+| `recycler.timeout_seconds` | `recycler_settings.cooldown_seconds` | `10` |
+
+A Mystery Box cannot be recycled, traded, or sold on the Marketplace.
+
+## Credit furni
+
+A credit furni, such as a gold bar or a coin, turns into credits when its owner redeems it. It has `interaction_type = 'exchange'`, and its value in credits is in `behaviour_data`.
+
+Migration 154 sets the value of every credit furni that had none. It reads the value from the name, like Habbo: `CF_50_goldbar` is worth 50 credits.
+
+Items whose name starts with `CFC_` cannot be redeemed for credits, like on Habbo. They still have a value. For example, Wired chest payments count `CFC_10_coin_bronze` as 10 credits.
+
 ## Give currency to a player
 
 Authorized staff can use the following chat commands. Replace `PlayerName` and the amount with the intended recipient and value.

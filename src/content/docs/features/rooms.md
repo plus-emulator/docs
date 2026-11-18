@@ -15,6 +15,31 @@ Owners can also choose who can mute, kick, or ban visitors. These room settings 
 
 Groups have their own membership and room rights. Giving someone rights in one room does not give them a hotel staff role.
 
+### Door tile, idle and pet settings
+
+The room settings window has these settings, like Habbo:
+
+| Setting | What it does | Default |
+| --- | --- | --- |
+| Door tile | When on, a user who walks onto the door tile leaves the room. | On |
+| Idle sleep | An avatar that does nothing falls asleep after this time. 30 to 3600 seconds. | On, 300 seconds |
+| Idle kick | An avatar that does nothing leaves the room after this time. 60 to 36000 seconds, and at least 30 seconds more than idle sleep when both are on. | On, 900 seconds |
+| Mute all pets | Pets in the room do not talk. | Off |
+
+Only Habbo Club members can change the door tile, idle sleep and idle kick settings. Every room owner can change "Mute all pets". When a timer is off, the room keeps its last time for later.
+
+The settings are stored in the `rooms` table, in the columns `leave_on_door_tile`, `idle_sleep_enabled`, `idle_sleep_timeout_seconds`, `idle_autokick_enabled`, `idle_autokick_timeout_seconds`, and `mute_all_pets`. Migration 137 adds them with the defaults above.
+
+### Global home room
+
+Players without their own home room can start in a room you choose. Set the server setting `global_home_room` to the room ID, then run `:update settings`:
+
+```sql
+UPDATE server_settings SET `value` = '123' WHERE `key` = 'global_home_room';
+```
+
+These players go to that room when they log in and when they press "go to home room". A player's own home room still wins. `0` turns it off, and that is the default.
+
 ## Public rooms
 
 The **Public** tab is the first tab players see when they open the navigator. It lists the hotel's public rooms as tiles with a picture. Players click a tile to enter the room.
@@ -101,6 +126,8 @@ A room background is a furniture item that shows an image in the room. To set th
 Click the background in the room. The fields `imageUrl`, `offsetX`, `offsetY`, and `offsetZ` show in the info stand. Users without the permission do not see these fields.
 
 The image and click addresses must be empty or start with `http://` or `https://`. The emulator refuses other addresses, such as `javascript:` or `data:` addresses.
+
+`offsetZ` sets the depth of the image, like on Habbo. It can be any whole number. Near `0`, walls, the floor and furniture can cover the image. Use a value of about `9000` to `20000` to bring the image to the front.
 
 ## Games
 

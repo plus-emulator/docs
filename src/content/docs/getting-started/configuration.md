@@ -138,4 +138,41 @@ On Linux, connect with:
 mariadb --host=127.0.0.1 --port=3306 --user=hotel --password plus
 ```
 
-Enter the password at the prompt. For a desktop database client, use an SSH tunnel to `127.0.0.1:3306` through the server's SSH address. Keep the database port private.
+Enter the password at the prompt.
+
+### Connect from your PC
+
+For a desktop database client, such as HeidiSQL, you have two choices:
+
+- Use an SSH tunnel to `127.0.0.1:3306` through the server's SSH address. The database port stays private.
+- Open the database port to your own IP address with the installer. This works on Linux servers only.
+
+To open the port to your PC's IPv4 address, run on the server:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo bash -s -- --remote-database 203.0.113.7
+```
+
+Replace `203.0.113.7` with your own address. You can list several addresses or networks, separated by commas, for example `203.0.113.7,198.51.100.0/24`. Every other address stays blocked. At the end, the installer prints what to fill in on your PC: the server's IP address, port `3306`, user `hotel`, database `plus`, and the password.
+
+To close the database again:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo bash -s -- --remote-database off
+```
+
+On an installed hotel, `--remote-database` changes only the firewall rules, the `hotel` database accounts, and the MariaDB listen address. The website, emulator, and client stay as they are. MariaDB and the emulator restart once when the database opens or closes, so players are disconnected for a moment.
+
+A [local install](/getting-started/local-install/) does not need this. Connect to `127.0.0.1`.
+
+## Atom CMS client page
+
+Atom CMS opens the client on its client page. These rules apply to the Atom CMS version of 18 November 2026 and newer:
+
+- **The game keeps running.** When a player opens the website from the client page, the website opens on top of the client. A "Return to hotel" button shows the client again, without a new login.
+- **Logout everywhere.** When a player logs out in the client, the website logs them out too, in every open tab.
+- **Client buttons.** The home, reload, fullscreen, and online count buttons on the client page are off by default.
+
+To show the client buttons, open Housekeeping, go to the CMS settings, and set `enable_client_buttons` to `1`. `0` hides the buttons again.
+
+Change this setting in Housekeeping, not with SQL. Atom CMS keeps the website settings in its cache, and Housekeeping clears that cache when you save. The headless API reports the setting as `clients.buttons_enabled` in `GET /api/v1/bootstrap`.
