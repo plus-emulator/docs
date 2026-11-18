@@ -11,21 +11,24 @@ This changelog lists the changes in every part of the hotel:
 - **PlusEMU**, the emulator (server).
 - **Volt**, the client, and **Volt Renderer**, the part of the client that draws rooms and avatars.
 - **The installer**, which sets up and updates a hotel, and the **hotel files pack** it installs.
+- **Atom CMS**, the hotel website.
 - **The database migrator**, which moves an Arcturus or Morningstar hotel to PlusEMU.
 
 The newest changes come first. Each page covers a few days and names the versions released in that time.
 
 ## Latest versions
 
-- [PlusEMU 1.0.25](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.25)
-- [Volt 1.0.0](https://github.com/plus-emulator/Volt/releases/tag/v1.0.0)
-- [Volt Renderer 1.0.0](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.0)
-- [Installer 2.0.1](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.0.1)
+- [PlusEMU 1.0.31](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.31)
+- [Volt 1.0.9](https://github.com/plus-emulator/Volt/releases/tag/v1.0.9)
+- [Volt Renderer 1.0.4](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.4)
+- [Installer 2.3.1](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.3.1)
 
 To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
 ## All changes
 
+- [9-18 November 2026](/changelog/2026-11-09/): PlusEMU 1.0.28 to 1.0.31, Volt 1.0.4 to 1.0.9, Volt Renderer 1.0.2 to 1.0.4, installer 2.3.0 and 2.3.1, Atom CMS.
+- [31 October - 8 November 2026](/changelog/2026-10-31/): PlusEMU 1.0.26 and 1.0.27, Volt 1.0.1 to 1.0.3, Volt Renderer 1.0.1, installer 2.1.0 to 2.2.1.
 - [27-30 October 2026](/changelog/2026-10-27/): PlusEMU 1.0.25, Volt 1.0.0, Volt Renderer 1.0.0, installer 2.0.1.
 - [24-25 October 2026](/changelog/2026-10-24/): PlusEMU 1.0.24, installer 2.0.0.
 - [20-23 October 2026](/changelog/2026-10-20/): PlusEMU 1.0.2 to 1.0.23, Volt 3.5.1, installer 1.4.0 to 1.7.0.
