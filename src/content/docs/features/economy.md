@@ -35,9 +35,15 @@ The reload also rebuilds generated furniture data. Furniture artwork still needs
 
 Trading exchanges eligible inventory items between players. Room trading settings and player restrictions can prevent a trade. Furniture definitions decide whether an item can be traded.
 
-The marketplace lists eligible furniture for sale. Marketplace eligibility is separate from trade eligibility. A tradeable item is not automatically sellable on the marketplace.
+The marketplace lists eligible furniture for sale. A player can sell an item only when its furniture row has both `allow_trade = 1` and `allow_marketplace_sell = 1`. Both default to `1`. A tradeable item is not automatically sellable on the marketplace.
 
-Gift purchases, crafting recipes, and recycler rewards depend on their own catalogue and database configuration.
+```sql
+UPDATE furniture SET allow_marketplace_sell = 0 WHERE item_name = 'acme_throne';
+```
+
+The marketplace fee, the price range and how long an offer stays on sale are [marketplace settings](/getting-started/server-settings/#marketplace). With `catalog.marketplace.only_rare_ltd = 1`, players can sell only rare furni (`furniture.is_rare = 1`) and limited edition furni.
+
+Gift purchases, [crafting recipes](/features/crafting/), and recycler rewards depend on their own catalogue and database configuration. For club offers, vouchers, limited stock and the catalogue front page, see [club, vouchers and catalogue offers](/features/catalogue-offers/).
 
 ## Furni-Matic
 
@@ -84,6 +90,29 @@ Volt reads three settings from `ui-config.json`. Keep them equal to the server v
 | `recycler.timeout_seconds` | `recycler_settings.cooldown_seconds` | `10` |
 
 A Mystery Box cannot be recycled, traded, or sold on the Marketplace.
+
+### Which furni can be recycled
+
+A player can put an item into the Furni-Matic only when:
+
+- The furniture row has `allow_recycle = 1`. This is the default.
+- It is not a limited edition item.
+- It is not Builders Club furni.
+- It is not a gift or a box that is still closed.
+- It is not a disc or a jukebox in use in a playlist.
+
+### Troubleshooting
+
+**"The Furni-Matic is not available right now" after a player clicks Start.** PlusEMU refused the exchange. Check these causes:
+
+- The number of slots in the client is not the server's number. `recycler.number_of_slots` in `ui-config.json` must equal `recycler_settings.slots`. The server accepts only exactly that many items.
+- The player has fewer Duckets than `recycler_settings.cost_duckets`. If `recycler.ducket_cost` in `ui-config.json` shows a lower price, the player does not see the problem before Start.
+- The player used the machine again too soon. `recycler.timeout_seconds` in `ui-config.json` must not be lower than `recycler_settings.cooldown_seconds`.
+- One of the items cannot be recycled. See the list above.
+- The player is trading, or is not in a room.
+- The setup is not valid, for example the `matic_box` furniture row is missing. See the rules above.
+
+After you change `ui-config.json`, players must reload the client.
 
 ## Credit furni
 

@@ -80,6 +80,59 @@ The API also has routes under `/api/public/rooms/{roomId}/variables_profile/` fo
 
 For complete route and request definitions, see [WiredWebApiEndpoints.cs](https://github.com/plus-emulator/PlusEMU/blob/master/Communication/Http/WiredWebApiEndpoints.cs).
 
+## Limits and room settings
+
+### Execution cost
+
+Every room has a Wired execution cost cap. When the Wired of a room costs more, the room counts as heavy. The cap follows the account level of the room owner:
+
+```text
+cap = 312.5 x (account level + 2)
+```
+
+The account level is `users.account_level`. New accounts start at level 8, which gives a cap of 3125. A level below 1 counts as 1.
+
+The cap also sets the most permanent variables in the room: furni variables = cap / 200, user variables = cap / 50, global variables = cap x 3 / 200, rounded down. With a cap of 3125, that is 15, 62 and 46.
+
+The Wired monitor also shows a cap of 4000 floor furni and 4000 wall furni.
+
+### Hotel-wide limits
+
+These `server_settings` keys are optional. PlusEMU uses the default when a key is missing. Reload them with `:update settings`.
+
+| Key | Default | What it does |
+| --- | --- | --- |
+| `wired.max_depth` | `20` | How deep one Wired stack can trigger another. |
+| `wired.max_executions_per_pass` | `10000` | Wired executions in one pass. |
+| `wired.max_pending_stacks` | `10000` | Stacks that can wait to run. |
+| `wired.execution_cost_cap` | not set | One execution cost cap for every room. It replaces the cap from the account level. |
+
+### Who can inspect and change Wired
+
+Each room has a row in `room_wired_settings` with `inspect_mask`, `modify_mask` and `timezone`. Room owners set them in the Wired menu. The masks add up these values:
+
+| Value | Who |
+| --- | --- |
+| `1` | Everyone (inspect only) |
+| `2` | Users with rights |
+| `4` | Group members |
+| `8` | Group admins |
+
+A room without a row lets only the owner, staff and group admins inspect and change Wired (mask `8`). Everyone who can change Wired can also inspect it. `timezone` is a time zone ID, at most 64 characters, used by time conditions. When it is empty, the Wired menu shows the server's time zone.
+
+The time zones that players can choose come from `wired.timezones` in `ui-config.json`, separated by commas. The server checks that each one is a valid time zone ID.
+
+### Volt settings
+
+| `ui-config.json` key | Default | What it does |
+| --- | --- | --- |
+| `wired.timezones` | `""` | The time zones in the Wired settings, separated by commas. Empty offers every time zone the browser knows. |
+| `wired.selfdonation.enabled` | `false` | Shows the self-donation option in the Wired tools. |
+| `wired.selfdonation.max.amount` | `500` | The highest self-donation amount. |
+| `wired.action.kick.from.room.max.length` | `100` | The longest kick message. |
+| `wired.action.mute.user.max.length` | `100` | The longest mute message. |
+| `wired.webapi.url` | the host and port of `socket.url` | The address of the [Web API](#web-api) that the Wired tools show. |
+
 ## When a stack does nothing
 
 Check the trigger and conditions first. Confirm that selected users or furniture still exist in the room and that the relevant boxes share the intended tile.

@@ -33,7 +33,7 @@ All files are in the `configuration/` folder.
 | File | Main settings |
 | --- | --- |
 | `renderer-config.json` | `socket.url` (game server WebSocket), `api.url`, `asset.url`, `image.library.url`, `hof.furni.url`, `gamedata.url`, and the URL of each game data file |
-| `ui-config.json` | `camera.url`, `thumbnails.url`, `url.prefix`, `habbopages.url`, catalogue and interface options |
+| `ui-config.json` | `thumbnails.url`, `url.prefix`, `habbopages.url`, catalogue and interface options |
 | `client-mode.json` | `secureAssetsEnabled`, `secureApiEnabled`, `distObfuscationEnabled`, `apiBaseUrl`, `plainConfigBaseUrl`, `plainGamedataBaseUrl` |
 
 Text files (`UITexts_*.jsonc.example`, `QuestUITexts.jsonc.example`) and `hotlooks.example` are in the same folder. Copy them and remove `.example` from the name to use them.
@@ -42,12 +42,40 @@ Text files (`UITexts_*.jsonc.example`, `QuestUITexts.jsonc.example`) and `hotloo
 
 These settings turn on or tune single features. New installs get the values below. `plusemu-update` adds a missing setting with its default, and keeps the value your file already has.
 
+How `plusemu-update` merges `renderer-config.json`, `ui-config.json` and `client-mode.json`:
+
+- A setting that is missing in your file is added from Volt's example file.
+- A value in your file always wins. Objects are merged key by key, so a new key inside an object such as `notification` is added.
+- A list in your file, such as `chat.styles` or `camera.available.effects`, is kept as it is. New list entries from a release are not added. Compare the list with the example file by hand.
+- A file with comments or trailing commas is not plain JSON. The update keeps it as it is and adds no new settings. It shows a warning.
+- The update never reads values from the database. Keep the [server values](#settings-that-must-match-the-server) equal by hand.
+
 | File | Setting | What it does | Default |
 | --- | --- | --- | --- |
 | `renderer-config.json` | `habbicons.asset.hash` | The folder with the habbicon images. See [habbicons](#habbicons). | `habbo-225e1f8a` |
 | `renderer-config.json` | `system.fps.max` | The highest frame rate. See [frame rate](#frame-rate). | `60` |
 | `ui-config.json` | `recycler.number_of_slots` | The number of Furni-Matic slots. Keep it equal to the server. See [Furni-Matic](/features/economy/#furni-matic). | `8` |
 | `ui-config.json` | `image.library.dailytasks.url` | Where the daily task icons are. Without it, Volt uses the `dailytasks/` folder under `image.library.url`. | `${image.library.url}dailytasks/` |
+| `ui-config.json` | `dailytasks.enabled` | `true` shows Daily tasks in the toolbar menu. See [daily tasks](/features/daily-tasks/#volt-settings). | not set |
+| `ui-config.json` | `toolbar.hide.quests` | `false` shows Quests in the toolbar menu. See [quests](/features/achievements-and-quests/#quests). | `true` |
+| `ui-config.json` | `builders.club.enabled` | `false` hides the Builders Club. See [Builders Club](/features/builders-club/#volt-settings). | not set (on) |
+| `ui-config.json` | `landing.view.*` | The hotel view background and widgets. See [hotel view](/features/hotel-view/). | empty |
+| `ui-config.json` | `wired.*` | Wired tool options. See [Wired](/features/wired/#volt-settings). | |
+
+### Settings that must match the server
+
+Volt shows these values, but PlusEMU decides. When they differ, players see wrong numbers or get errors.
+
+| `ui-config.json` setting | Must match |
+| --- | --- |
+| `recycler.number_of_slots` | `recycler_settings.slots`. See [Furni-Matic](/features/economy/#furni-matic). |
+| `recycler.ducket_cost` | `recycler_settings.cost_duckets` |
+| `recycler.timeout_seconds` | `recycler_settings.cooldown_seconds` |
+| `motto.max.length` | `38`, the motto limit of PlusEMU |
+| `bot.name.max.length` | `15`, the bot name limit of PlusEMU |
+| `system.currency.types` | The activity point types your hotel uses |
+| `catalog.links`, `catalog.clothes.page`, `avatareditor.pets.catalog.page.name`, `avatareditor.effects.buy.button.catalog.page.name` | Catalogue page names that exist in `catalog_pages` |
+| `camera.available.effects` | The effect names in `Camera.Effects` of the emulator's `Config/config.json` |
 
 ### Habbicons
 
@@ -66,6 +94,38 @@ Since Volt 1.0.8 and Volt Renderer 1.0.4, `habbicons.json` uses Habbo's own form
 Volt draws at most 60 frames per second. Change the default with `system.fps.max` in `renderer-config.json`.
 
 Players can change it for their own session with the `:fps` chat command, like in the AIR client. For example, `:fps 30` sets 30 frames per second. The value can be 5 to 10000. `:togglefps` turns the limit off and on.
+
+## Link events
+
+A link event is a short text that opens a part of Volt. Use link events in [hotel view widgets](/features/hotel-view/#widget-elements), in texts and in buttons.
+
+| Link event | Opens |
+| --- | --- |
+| `openView/calendar` | The [campaign calendar](/features/campaign-calendar/) |
+| `catalog/open` | The catalogue |
+| `catalog/open/<page>` | A catalogue page, by page name or page ID |
+| `catalog/open/offerId/<id>` | The page of an offer |
+| `catalog/show/builders_club` | The Builders Club catalogue |
+| `catalog/warehouse/<page>` | A page of the Builders Club catalogue |
+| `navigator/show`, `navigator/toggle` | The navigator |
+| `navigator/goto/<room id>` | Goes to a room. `navigator/goto/home` goes to the home room. |
+| `navigator/search/<text>` | A navigator search |
+| `navigator/create` | The create room window |
+| `inventory/show`, `inventory/toggle` | The inventory. Add `/furni`, `/pets`, `/badges` or `/bots` for one tab. |
+| `achievements/toggle` | Achievements |
+| `questengine/achievements/<category>` | One achievement category |
+| `quests/toggle` | Quests |
+| `dailytasks/open` | [Daily tasks](/features/daily-tasks/) |
+| `reward_track/open` | [Reward tracks](/features/reward-tracks/) |
+| `habboUI/open/hccenter` | The Habbo Club center |
+| `avatar-editor/show` | The avatar editor |
+| `friends/show` | The friends list |
+| `groups/create` | The create group window |
+| `games/toggle` | The game center |
+| `collectibles/open` | The [Collectibles](/features/collectibles/) hub |
+| `user-settings/show` | The user settings |
+| `help/show` | The help window |
+| `habbopages/<page>` | A Habbo page from `habbopages.url` |
 
 ## Connect to PlusEMU
 
