@@ -24,16 +24,18 @@ Ask questions, get help and talk to other hotel owners: **[Join the PlusEMU Disc
 | Understand ranks and permissions | [Ranks and permissions](/administration/ranks-and-permissions/) |
 | Give or remove staff access | [Assign and remove roles](/administration/manage-roles/) |
 | Add a permission to a feature | [Create roles and permissions](/administration/custom-permissions/) |
-| Set up room photos | [Set up the camera](/features/camera-setup/) |
+| Set up room photos | [Camera](/features/camera/) |
 
 ## Explore the features
 
 - [Camera](/features/camera/) saves room photos and thumbnails through a separate renderer service.
 - [Wired](/features/wired/) lets room builders connect triggers, conditions, and effects without writing server code.
 - [Rooms and building](/features/rooms/) covers room settings, building tools, room games, and community features.
-- [Catalogue and economy](/features/economy/) covers the catalogue, currencies, trading, and other ways to exchange items.
+- [Catalogue and economy](/features/economy/) covers the catalogue, currencies, trading, the Furni-Matic, and credit furni.
+- [Pets](/features/pets/) covers pet packages, pet lines and commands, horses, and monster plants.
 - [Collectibles](/features/collectibles/) covers the Collectibles hub and avatar collectibles.
 - [Pet companions](/features/pet-companions/) are small pets that players buy in the catalogue and wear with their look.
+- [Reward tracks](/features/reward-tracks/) covers reward track tasks and prizes, and the Habboween 2026 track.
 - [Avatar effects](/features/avatar-effects/) covers buying, wearing, and selling effects, and effect boxes.
 - [Add new furniture](/features/add-furniture/) shows how to add a furniture item. Furniture data is generated from the database.
 - [Add new clothing](/features/add-clothing/) shows how to add clothing, sell it in the catalogue, and how the wardrobe checks outfits.
@@ -42,7 +44,7 @@ The [ranks and permissions guide](/administration/ranks-and-permissions/) explai
 
 ## What you need
 
-A running hotel combines the emulator, a MariaDB or MySQL database, a compatible client, and the client's assets. Your website handles registration and login. The camera renderer is a separate service that you can add when you need photos.
+A running hotel combines the emulator, a MariaDB or MySQL database, a compatible client, and the client's assets. Your website handles registration and login. The camera renderer is a separate service. The installer sets it up, and a manual installation adds it when it needs photos.
 
 The [installation guide](/getting-started/installation/) lists what you need before you start: a server, a domain, and a Cloudflare account.
 
