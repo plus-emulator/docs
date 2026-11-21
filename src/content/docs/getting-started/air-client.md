@@ -1,64 +1,107 @@
 ---
 title: Connect the AIR client
-description: Set up your hotel for Habbo's AIR client, add the website button, and start the client with the launcher, from zero to logged in.
+description: Set up your hotel for Habbo's AIR client with one installer command, or by hand, and start the client with the launcher, from zero to logged in.
 sidebar:
   order: 5
 ---
 
 Players can play your hotel with Habbo's official AIR desktop client. They start it with a free launcher that points the client to your hotel. This page has two parts:
 
-- [Set up the hotel](#set-up-the-hotel) is for the hotel owner. Do it once.
+- [Set up the hotel](#set-up-the-hotel) is for the hotel owner. With the installer, it is one command.
 - [Play with the AIR client](#play-with-the-air-client) is for players. You can link players to that section.
 
 Volt does not need any of this. Volt connects to the `Nitro` WebSocket listener. The AIR client connects to the `Flash` TCP listener. Both clients can be used on the same hotel at the same time.
 
 ## How it works
 
-1. The player sets the launcher to your domain, for example `example.com`.
-2. The launcher opens `https://example.com/?launcher=air` in the browser. The player signs in.
-3. The player presses **Open AIR client** on the website. The website opens a `habbo://hab?server=example.com&token=<login ticket>` link, which hands the ticket to the launcher.
-4. The launcher reads `https://example.com/api/client/air.json`. It downloads Habbo's AIR client, writes your game address and handshake key into its own copy of the client, and starts it with the ticket.
+1. The player signs in on your website, for example `https://example.com`, and presses **Open AIR client**.
+2. The website opens a `habbo://hab?server=example.com&token=<login ticket>` link. The link hands the login ticket to the launcher.
+3. The launcher reads `https://example.com/api/client/air.json`. It downloads the AIR client from the `client.url` in that file, or Habbo's current client when there is none.
+4. The launcher writes your game address and handshake key into its own copy of the client and starts it with the ticket.
 5. The client connects to your game port over plain TCP and logs in. Then it loads the game data from `https://example.com/gamedata/` and the furniture and clothing from the asset addresses in that data.
+
+### Why the client needs a patch
+
+Habbo's AIR client only connects to Habbo's own game servers. Before it connects, it cuts 10 characters off the game address and adds `.habbo.com`. So a client set to `example.com` tries to connect to a Habbo server and shows **Maintenance break**.
+
+Two things fix this, and both are already done for you:
+
+- **The patched client.** PlusEMU publishes a copy of Habbo's client without this check at `https://assets.plusemu.dev/air/latest.json`. The installer points `client.url` at it.
+- **The launcher.** HabboCustomLauncher [v2026.11.21](https://github.com/DennisObject/HabboCustomLauncher/releases/tag/v2026.11.21) and newer remove the check from any client it starts, also from Habbo's own client. It then adds `.habbo.com` to your game address, so the 10 characters the client cuts off leave your real address.
+
+Players need launcher v2026.11.21 or newer. Older launchers show **Maintenance break** on every hotel that is not Habbo.
 
 ## Set up the hotel
 
 You need:
 
-- A current PlusEMU version. See [keep PlusEMU up to date](#1-keep-plusemu-up-to-date).
+- A current PlusEMU version. See [keep the client and PlusEMU up to date](#keep-the-client-and-plusemu-up-to-date).
 - A domain with HTTPS, for example `example.com`.
-- A second hostname for the game port that is not proxied over HTTP, for example `game.example.com`.
-- Atom CMS with its Atom Nuxt front end, for the **Open AIR client** button. See [add the website button](#7-add-the-website-button).
+- Atom CMS, for the **Open AIR client** button.
 
-The examples use the paths of the [installer](/getting-started/installation/) on Linux. For a manual installation, use your own emulator folder.
+### Set up with the installer
 
-### What the installer does and does not do
+If you installed the hotel with the [installer](/getting-started/installation/), one command sets up everything.
 
-The installer does not set up the AIR client. After an installation:
+On an installed hotel:
 
-- `Flash.Hostname` is `127.0.0.1`, so only the server itself can reach the game port. `Flash.Port` is `1232`.
-- There is no handshake key and the `AirClient` section is empty, so `/api/client/air.json` answers 404.
-- The website has no routes for `/api/client/` and `/gamedata/`.
-- The firewall only opens SSH, HTTP and HTTPS.
-- Atom CMS has `AIR_CLIENT_ENABLED=false`.
+- Linux: `sudo plusemu-update --with-air`
+- Windows, in Administrator PowerShell: `plusemu-update -WithAir`
 
-Do the steps below once. `plusemu-update` keeps them: it copies your `Config` folder, including the key, into each new emulator version. It also keeps your changes to the website's nginx file. If you run the full installer again, it writes a new nginx file, so add the routes again.
+On a new hotel, add the option to the installer command:
 
-The installer does give you one useful thing: the hotel files pack has the badge and catalogue images that the AIR client can use. See [set up the game data](#5-set-up-the-game-data).
+```bash
+curl -fsSL https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.sh | sudo bash -s -- --with-air
+```
 
-### 1. Keep PlusEMU up to date
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/plus-emulator/plusemu-installer/main/install.ps1))) -WithAir
+```
 
-PlusEMU always targets the newest AIR client build from Habbo. Each PlusEMU version supports exactly one build. The client and the emulator must use the same build, or the client cannot log in.
+`PLUSEMU_AIR=1` does the same as the option. The installer saves the choice, so every later rerun and `plusemu-update` keeps the AIR client on. You cannot turn it off with the installer: players' launchers keep your game address and handshake key.
 
-- Leave `AirClient.ClientUrl` empty. The launcher then downloads Habbo's current AIR client.
-- Keep PlusEMU updated with `sudo plusemu-update` (Linux) or `plusemu-update` (Windows). See [updates](/getting-started/updates/).
+The command does all of the steps in [set up by hand](#set-up-by-hand):
 
-When Habbo releases a new AIR client, the launcher downloads it. Players can log in again after you install the PlusEMU release that supports it.
+1. It reads `https://assets.plusemu.dev/air/latest.json`, downloads Habbo's AIR texts from there and checks their SHA-256. It saves them in the emulator's `Config/air/` folder. Habbo blocks downloads from many servers, so the texts come from PlusEMU's copy.
+2. It creates the handshake key `Config/rsa-private.pem` once. It never replaces an existing key.
+3. It sets `Flash` to `0.0.0.0:30000`, `Encryption.RsaPrivateKeyFile` and the `AirClient` settings in `Config/config.json`. `ClientUrl` and `ClientVersion` point at the patched client. Your other settings stay.
+4. It chooses the game address:
+   - With a Cloudflare API token in that run, it adds a DNS-only `A` record `game.<domain>` and uses that name.
+   - Without a token, the client connects to the server's IPv4 address.
+5. It opens TCP port 30000 to every address: `ufw` on Linux, the firewall rule `plusemu-air-30000` on Windows. The website still accepts HTTPS only from Cloudflare.
+6. It passes the AIR paths to the emulator: `location` blocks in nginx, or the IIS rule `PlusEMU AIR client` for the whole server.
+7. It sets `AIR_CLIENT_ENABLED=true` in Atom CMS and refreshes its caches, so the website shows the **Open AIR client** button.
+8. It restarts the emulator when the settings changed. Players are disconnected for a moment.
+9. It checks that `air.json`, `/gamedata/hashes` and port 30000 answer, and adds these checks to the [health check](/getting-started/backups-and-health/#health-check-and-discord-alerts).
 
-:::note
-You can hold an older build for a short time, for example while the PlusEMU release for Habbo's newest build is not out yet. Set `AirClient.ClientUrl` to the `flash-windows` address and `AirClient.ClientVersion` to `flash-windows-version` from `https://www.habbo.com/gamedata/clienturls`, as they were for the build you want to keep. The launcher uses this Windows package on every system. Empty `ClientUrl` again after you update PlusEMU.
-:::
+At the end it prints the client version, the game address and the steps for players.
 
-### 2. Create the handshake key
+To use `game.<domain>` instead of the IP address later, run the command again with your Cloudflare API token:
+
+- Linux: `sudo PLUSEMU_CLOUDFLARE_TOKEN=<token> plusemu-update --with-air`
+- Windows: `$env:PLUSEMU_CLOUDFLARE_TOKEN = '<token>'; plusemu-update -WithAir`
+
+The installer does not save the token.
+
+A [local installation](/getting-started/local-install/) uses `127.0.0.1` as the game address and listens on `127.0.0.1` only. It changes no firewall or DNS.
+
+If your PlusEMU version has no AIR support yet, the command saves the choice and asks you to run `plusemu-update`. That update installs the newest PlusEMU and sets up the AIR client.
+
+Then [check that it works](#check-that-it-works).
+
+### Keep the client and PlusEMU up to date
+
+Each PlusEMU version supports exactly one AIR client build from Habbo. The client and the emulator must use the same build, or the client cannot log in.
+
+- With the installer, `plusemu-update` installs the newest PlusEMU and the matching patched client together. Keep your hotel updated. See [updates](/getting-started/updates/).
+- When Habbo releases a new AIR client, players keep the published client until PlusEMU publishes a release and a patched client for the new build. Your hotel gets both with the next `plusemu-update`.
+- With an empty `AirClient.ClientUrl`, the launcher always downloads Habbo's newest client. Then players cannot log in between Habbo's release and the PlusEMU release that supports it. Use the published client instead.
+
+### Set up by hand
+
+Use these steps without the installer, or to understand what the installer does. The examples use the installer's paths: `/var/www/hotel` on Linux and `C:\Hotel` on Windows. For a manual installation, use your own emulator folder.
+
+#### 1. Create the handshake key
 
 The AIR client checks the server's handshake with an RSA public key. The client only accepts the public exponent `65537`. PlusEMU needs its own 2048-bit key. Never put the private key in a repository.
 
@@ -76,6 +119,8 @@ On Windows, in PowerShell:
 
 PlusEMU does not overwrite an existing file. On Linux it writes the key with mode `0600`. It also prints the public modulus. You do not need to copy it anywhere: `air.json` publishes it.
 
+Do not replace the key later. Every player's client is patched with its public part, so a new key logs everybody out until their launcher patches the client again.
+
 You can also create the key with `openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out Config/rsa-private.pem`. Make sure the emulator's user can read the file.
 
 Tell PlusEMU where the key is. Use one of these:
@@ -86,21 +131,48 @@ Tell PlusEMU where the key is. Use one of these:
 
 Without a key, PlusEMU uses an old built-in 1024-bit key with exponent 3 and logs a warning. The AIR client cannot log in with that key, and `air.json` answers 404.
 
-### 3. Open the game port
+#### 2. Open the game port
 
-The AIR client needs a plain TCP connection to the `Flash` listener. HTTP proxies cannot carry this connection.
+The AIR client needs a plain TCP connection to the `Flash` listener. HTTP proxies, such as Cloudflare's proxy, cannot carry this connection.
 
 1. In `Config/config.json`, set `Flash.Hostname` to `0.0.0.0` and `Flash.Port` to the game port. This page uses `30000`, the default of `AirClient.GamePorts`. The default `Flash.Port` is `1232`, so change one of them until they match.
 2. Open the port in the firewall:
    - Linux: `sudo ufw allow 30000/tcp`
-   - Windows: `New-NetFirewallRule -DisplayName 'PlusEMU AIR client' -Direction Inbound -Protocol TCP -LocalPort 30000 -Action Allow`
-3. Give the game port its own hostname, for example `game.example.com`. If your website is behind Cloudflare, add an `A` record named `game` with your server's IPv4 address, and set **Proxy status** to **DNS only**. A proxied hostname only carries HTTP, so the client cannot connect through it.
+   - Windows: `netsh advfirewall firewall add rule name=plusemu-air-30000 dir=in action=allow protocol=TCP localport=30000`
+3. Choose the game address:
+   - The server's public IPv4 address. This works without DNS.
+   - Or a hostname, for example `game.example.com`. If your website is behind Cloudflare, add an `A` record named `game` with your server's IPv4 address, and set **Proxy status** to **DNS only**. A proxied hostname only carries HTTP, so the client cannot connect through it.
 
-A DNS-only hostname shows your server's IP address. The installer's firewall still accepts HTTPS only from Cloudflare, so the website stays behind Cloudflare. Only the game port is reachable directly.
+Both choices show your server's IP address to players. The installer's firewall still accepts HTTPS only from Cloudflare, so the website stays behind Cloudflare. Only the game port is reachable directly.
 
-### 4. Fill in the `AirClient` settings
+#### 3. Get the AIR texts
 
-Add your values to the `AirClient` section of `Config/config.json`. For example:
+The client needs a full set of Habbo's external variables and texts. They tell the client where to load furniture, clothing, sounds and images. Habbo blocks downloads from many servers, so use PlusEMU's copy. `https://assets.plusemu.dev/air/latest.json` lists the current files and their SHA-256.
+
+On Linux:
+
+```bash
+sudo runuser -u plusemu -- mkdir -p /var/www/hotel/emulator/Config/air
+cd /var/www/hotel/emulator/Config/air
+manifest=$(curl -fsSL https://assets.plusemu.dev/air/latest.json)
+sudo runuser -u plusemu -- curl -fsSL -o external_variables.txt "$(jq -r .externalVariables.url <<< "$manifest")"
+sudo runuser -u plusemu -- curl -fsSL -o external_flash_texts.txt "$(jq -r .externalFlashTexts.url <<< "$manifest")"
+```
+
+On Windows, in PowerShell:
+
+```powershell
+$manifest = Invoke-RestMethod https://assets.plusemu.dev/air/latest.json
+New-Item -ItemType Directory -Force C:\Hotel\emulator\Config\air | Out-Null
+Invoke-WebRequest $manifest.externalVariables.url -OutFile C:\Hotel\emulator\Config\air\external_variables.txt
+Invoke-WebRequest $manifest.externalFlashTexts.url -OutFile C:\Hotel\emulator\Config\air\external_flash_texts.txt
+```
+
+`plusemu-update` copies the `Config` folder, so it keeps these files.
+
+#### 4. Fill in the `AirClient` settings
+
+Add your values to `Config/config.json`. Use the `version` and `client.url` from `https://assets.plusemu.dev/air/latest.json` for `ClientVersion` and `ClientUrl`. For example:
 
 ```json
 "Flash": {
@@ -126,8 +198,8 @@ Add your values to the `AirClient` section of `Config/config.json`. For example:
     "Environment": "en",
     "GameHost": "game.example.com",
     "GamePorts": "30000",
-    "ClientVersion": "",
-    "ClientUrl": "",
+    "ClientVersion": "38-1",
+    "ClientUrl": "https://assets.plusemu.dev/air/client/38-1/HabboWin.zip",
     "WebApi": "",
     "PocketApi": "",
     "Configuration": {},
@@ -139,62 +211,29 @@ Add your values to the `AirClient` section of `Config/config.json`. For example:
 | Setting | Default | Meaning |
 | --- | --- | --- |
 | `UrlPrefix` | empty | The public address of the website, for example `https://example.com`. When it is empty, PlusEMU uses the address of the request (`X-Forwarded-Proto` and `Host`). |
-| `GameHost` | empty | The public hostname of the game port, for example `game.example.com`. `air.json` answers 404 while it is empty. |
+| `GameHost` | empty | The game address from [step 2](#2-open-the-game-port): a hostname or an IP address. `air.json` answers 404 while it is empty. |
 | `GamePorts` | `30000` | Game ports, separated by commas. The client tries them in order. One of them must be `Flash.Port`. |
-| `Environment` | `en` | The environment the client runs as. It must be `en`, `pt`, `de`, `es`, `fi`, `fr`, `it`, `nl`, `tr` or `s2`. The client drops any other value. |
+| `Environment` | `en` | The environment the client runs as. It must be `en`, `pt`, `de`, `es`, `fi`, `fr`, `it`, `nl`, `tr` or `s2`. The client drops any other value. The launcher handles it, so players never type it. |
 | `Name` | `PlusEMU` | The hotel name in `air.json`. |
-| `ClientUrl`, `ClientVersion` | empty | Leave them empty, so the launcher uses Habbo's current client. See [keep PlusEMU up to date](#1-keep-plusemu-up-to-date). |
+| `ClientUrl`, `ClientVersion` | empty | Where the launcher downloads the client, and its version. The launcher downloads the client again when `ClientVersion` changes. See [keep the client and PlusEMU up to date](#keep-the-client-and-plusemu-up-to-date). |
 | `WebApi`, `PocketApi` | empty | `web.api` and `pocket.api` for the client. When they are empty, the client uses `UrlPrefix`. |
 | `Configuration` | `{}` | Extra `key: value` lines for the client's built-in configuration. |
-| `ExternalVariablesFiles`, `ExternalTextsFiles`, `ProductDataFile`, `Variables` | empty | The game data. See [set up the game data](#5-set-up-the-game-data). |
+| `ExternalVariablesFiles`, `ExternalTextsFiles`, `ProductDataFile`, `Variables` | empty | The game data. See [game data](#game-data). |
 | `TicketLifetimeSeconds` | `60` | How long a ticket from `POST /api/client/air-ticket` works. PlusEMU keeps it between 10 and 300 seconds. A ticket works only once. |
 | `LauncherTokenLifetimeDays` | `30` | How long a launcher token works. PlusEMU keeps it between 1 and 365 days. |
 
 Restart the emulator after you change `Config/config.json`:
 
-```bash
-sudo systemctl restart plusemu
-```
+- Linux: `sudo systemctl restart plusemu`
+- Windows: `Restart-Service PlusEMU`
 
 The startup log shows `Handshake RSA key loaded from ... (2048 bits)` when the key works.
 
-### 5. Set up the game data
-
-After login, the AIR client loads `${url.prefix}/gamedata/hashes` and the four files it lists. PlusEMU builds these files:
-
-| File | Content |
-| --- | --- |
-| `external_variables` | `ExternalVariablesFiles`, merged in order. Then PlusEMU sets `furnidata.load.url` and `productdata.load.url` to its own files. `Variables` wins over everything. |
-| `external_flash_texts` | `ExternalTextsFiles`, merged in order. A file can have `key=value` lines or be a JSON object, such as Volt's `ExternalTexts.json`. |
-| `furnidata` | The [generated furniture data](/getting-started/configuration/#furniture-data-endpoints) from your database, as Habbo's XML. |
-| `productdata` | `ProductDataFile`: Habbo's XML or text file as it is, or a `ProductData.json` that PlusEMU converts to XML. Without it, PlusEMU uses the furniture names. |
-
-A relative file path is relative to `Config/`. PlusEMU reads a file again when it changes, so a game data change needs no restart.
-
-**The external variables need a full base file.** They tell the client where to load furniture, clothing, sounds and images. PlusEMU only adds its own furniture data and product data addresses. Start from Habbo's current file:
-
-```bash
-sudo runuser -u plusemu -- mkdir -p /var/www/hotel/emulator/Config/air
-sudo runuser -u plusemu -- curl -fsSL -o /var/www/hotel/emulator/Config/air/external_variables.txt https://www.habbo.com/gamedata/external_variables/1
-sudo runuser -u plusemu -- curl -fsSL -o /var/www/hotel/emulator/Config/air/external_flash_texts.txt https://www.habbo.com/gamedata/external_flash_texts/1
-```
-
-`plusemu-update` copies the `Config` folder, so it keeps these files.
-
-With Habbo's file, the AIR client loads furniture (`flash.dynamic.download.url`), clothing (`flash.client.url` and `external.figurepartlist.txt`) and most images from Habbo's servers. The hotel files pack has Volt's files, not the Flash `.swf` libraries that the AIR client needs. Only these files from the pack work for the AIR client:
-
-- Badge images: set `badge.image.path` to `https://example.com/hotel-files/c_images/album1584`.
-- Catalogue images: set `image.library.catalogue.url` to `https://example.com/hotel-files/c_images/catalogue/`.
-
-Habbo's file also points `external.texts.txt` and `external.override.texts.txt` at Habbo. Point both at your own texts file in `Variables`, as in the example in step 4.
-
-For your own furniture, host the `.swf` files yourself and change `flash.dynamic.download.url`. See [add furniture](/features/add-furniture/#air-client).
-
-### 6. Route the web paths to the emulator
+#### 5. Route the web paths to the emulator
 
 The PlusEMU web server answers the launcher and the game data on `WebServer.Hostname` and `WebServer.Port`, by default `127.0.0.1:8080`. The website must pass these paths to it.
 
-On a Linux installation, open `/etc/nginx/sites-available/hotel.conf`. Add these blocks inside the HTTPS `server` block, before `location / {`:
+On Linux, open `/etc/nginx/sites-available/hotel.conf`. Add these blocks inside the HTTPS `server` block, before `location / {`:
 
 ```nginx
     # AIR client: launcher file, login tickets and game data, answered by the emulator.
@@ -233,31 +272,23 @@ Then test and reload nginx:
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-On Windows with IIS, add URL Rewrite rules that send the same paths to `http://127.0.0.1:8080`.
+On Windows with IIS, add URL Rewrite rules that send the same paths to `http://127.0.0.1:8080/{R:0}` with Application Request Routing, and set the server variable `HTTP_X_FORWARDED_PROTO` to `https`. Add `HTTP_X_FORWARDED_PROTO` to the allowed server variables first. Put the rules before the website's own rules. Atom CMS replaces its `public/web.config` on updates, so add the rules for the whole server, not in that file.
 
-### 7. Add the website button
+#### 6. Turn on the website button
 
 Atom CMS creates the `habbo://` link for a signed-in player.
 
-1. In the website's `.env`, set `AIR_CLIENT_ENABLED=true`. On a Linux installation, the file is `/var/www/hotel/cms/.env`.
-2. Check that `APP_URL` is your public address, for example `https://example.com`. The link uses the host of `APP_URL` as `server`. The launcher only accepts the link when this host is exactly the **Hotel domain** in the launcher. `www.example.com` and `example.com` are different.
+1. In the website's `.env`, set `AIR_CLIENT_ENABLED=true`. The file is `/var/www/hotel/cms/.env` on Linux and `C:\Hotel\cms\.env` on Windows.
+2. Check that `APP_URL` is your public address, for example `https://example.com`. The link uses the host of `APP_URL` as `server`. The launcher only accepts the link when this host is exactly the hotel domain in the launcher. `www.example.com` and `example.com` are different.
 3. Reload the configuration cache:
 
    ```bash
    cd /var/www/hotel/cms && sudo -u www-data php artisan config:cache
    ```
 
-Atom then answers `POST /api/v1/client/launch` with `{"client": "air"}` with `habbo://hab?server=<APP_URL host>&token=<login ticket>`. The login ticket works for 5 minutes and only once. While the setting is off, this request answers 404. `GET /api/v1/bootstrap` shows the setting as `clients.air_enabled`.
+See [the website button](#the-website-button) for what the button does.
 
-The **Open AIR client** button is part of the Atom Nuxt front end. It shows on the player's home page and in the site banner when all of these are true:
-
-- `AIR_CLIENT_ENABLED=true`.
-- The player is signed in.
-- The player opened the website from the launcher. The launcher adds `?launcher=air`, and the website remembers it for that browser tab.
-
-The Atom CMS website that the installer sets up has no **Open AIR client** button. Its API answers the launch request, so you can add your own button that calls `POST /api/v1/client/launch` with `{"client": "air"}` for the signed-in player and opens the `url` from the answer. Another website must create a fresh login ticket for the player and open `habbo://hab?server=example.com&token=<login ticket>`.
-
-### 8. Check that it works
+### Check that it works
 
 Run these checks from a computer outside the server:
 
@@ -267,7 +298,7 @@ Run these checks from a computer outside the server:
    curl -s https://example.com/api/client/air.json
    ```
 
-   It must answer with JSON that has `game.host`, `game.ports`, `urls.prefix` and `rsa.modulus`. A 404 means that `GameHost` is empty or that PlusEMU has no usable handshake key.
+   It must answer with JSON that has `game.host`, `game.ports`, `urls.prefix`, `rsa.modulus` and `client.url`. A 404 means that `GameHost` is empty or that PlusEMU has no usable handshake key.
 
 2. The game data:
 
@@ -277,7 +308,7 @@ Run these checks from a computer outside the server:
 
    It must list `external_texts`, `external_variables`, `furnidata` and `productdata` with your domain in each `url`.
 
-3. The game port:
+3. The game port, with your game address:
 
    ```bash
    printf '<policy-file-request/>\0' | nc -w 3 game.example.com 30000
@@ -285,20 +316,26 @@ Run these checks from a computer outside the server:
 
    It must print a `<cross-domain-policy>` XML text. No answer means that the port is closed, `Flash.Hostname` is still `127.0.0.1`, or the hostname is proxied.
 
-4. A real login: follow [play with the AIR client](#play-with-the-air-client) with a test account.
+4. A real login: follow [play with the AIR client](#play-with-the-air-client) with a test account, on a computer that never used the AIR client before.
+
+With the installer, the health check runs checks 1 to 3 every 5 minutes.
 
 ### Troubleshooting
 
+- **The client shows Maintenance break.** The client shows this for every failed connection, so it does not name the real problem. Check these in order:
+  - The player uses launcher v2026.11.21 or newer. Older launchers keep Habbo's `.habbo.com` check.
+  - The [checks](#check-that-it-works) pass.
+  - The client build and the PlusEMU version match. See the emulator log.
 - **`air.json` answers 404, or the launcher says `Hotel config ... returned HTTP 404`.** `AirClient.GameHost` is empty, there is no handshake key, or the key does not use exponent `65537`. Check the startup log for `No RSA private key is configured` or `has public exponent`.
-- **`air.json` or `/gamedata/hashes` shows the website's page or a 404 from the website.** The nginx routes are missing or come after a block that catches them. See [step 6](#6-route-the-web-paths-to-the-emulator).
-- **The client starts but never connects.** Check the game port with `nc`. Check that `GamePorts` contains `Flash.Port`, that the firewall is open, and that the game hostname is **DNS only**.
-- **The client connects, then disconnects right away.** The client build and the PlusEMU version do not match. The emulator log shows `Unknown revision connected <build>`. Update PlusEMU, and leave `ClientUrl` empty.
+- **`air.json` or `/gamedata/hashes` shows the website's page or a 404 from the website.** The web routes are missing or come after a rule that catches them. See [step 5](#5-route-the-web-paths-to-the-emulator).
+- **The client starts but never connects.** Check the game port with `nc`. Check that `GamePorts` contains `Flash.Port`, that the firewall is open, and that a game hostname is **DNS only**.
+- **The client connects, then disconnects right away.** The client build and the PlusEMU version do not match. The emulator log shows `Unknown revision connected <build>`. Run `plusemu-update`, or set `ClientUrl` and `ClientVersion` to the published client.
 - **The launcher says the environment is not one the AIR client accepts.** `AirClient.Environment` is not one of the allowed values. Use `en` or another value from the list in step 4.
 - **The game data answers 500.** A file in `ExternalVariablesFiles`, `ExternalTextsFiles` or `ProductDataFile` does not exist, or the emulator's user cannot read it.
-- **Furniture, clothing or images are missing.** The external variables have no base file, or an asset address is wrong. See [set up the game data](#5-set-up-the-game-data).
+- **Furniture, clothing or images are missing.** The external variables have no base file, or an asset address is wrong. See [game data](#game-data).
 - **The login ticket does not work.** A ticket works only once. A ticket from `POST /api/client/air-ticket` works for `TicketLifetimeSeconds`, 60 seconds by default. A ticket from Atom works for 5 minutes. Press **Open AIR client** again.
-- **The Open AIR client button does not show.** Open the website from the launcher's **Open** button, sign in, and check `AIR_CLIENT_ENABLED` and the configuration cache.
-- **The launcher ignores the website link.** The host of Atom's `APP_URL` and the launcher's **Hotel domain** are not the same.
+- **The Open AIR client button does not show.** Sign in, and check `AIR_CLIENT_ENABLED=true` and the configuration cache. Update Atom CMS if it is older than 21 November 2026.
+- **The launcher ignores the website link.** The host of Atom's `APP_URL` and the launcher's hotel domain are not the same.
 - **A launcher token stopped working.** It expired after `LauncherTokenLifetimeDays`, the player changed their password, or the token was revoked.
 
 ## Play with the AIR client
@@ -307,7 +344,7 @@ This part is for players. Your hotel must have the [hotel setup](#set-up-the-hot
 
 ### 1. Download the launcher
 
-Download the launcher for your system from [HabboCustomLauncher releases](https://github.com/DennisObject/HabboCustomLauncher/releases/latest). This launcher is a fork of LilithRainbows' HabboCustomLauncher with a custom hotel setting.
+Download the launcher for your system from [HabboCustomLauncher releases](https://github.com/DennisObject/HabboCustomLauncher/releases/latest). Use v2026.11.21 or newer. This launcher is a fork of LilithRainbows' HabboCustomLauncher with a custom hotel setting.
 
 | System | File |
 | --- | --- |
@@ -333,23 +370,22 @@ The builds are not signed, so your system may warn you.
   On an Intel Mac, use `HabboCustomLauncher_OSX_x64`. The launcher needs write access to `/Applications` to open `habbo://` links.
 - **Linux:** run `chmod +x HabboCustomLauncher_Linux_x64 && ./HabboCustomLauncher_Linux_x64`. On ARM64, use `HabboCustomLauncher_Linux_arm64`.
 
-On the first start, the launcher downloads Habbo's AIR client. Each start, it registers itself as the program that opens `habbo://` links.
+Each start, the launcher registers itself as the program that opens `habbo://` links. Start it once before you use the website button.
 
-### 3. Set your hotel
+### 3. Log in
+
+1. Open the hotel's website in your browser and sign in.
+2. Press **Open AIR client**. If the browser asks to open the link with HabboCustomLauncher, allow it.
+3. The launcher downloads the client the first time, prepares it for the hotel and starts it. You are logged in.
+
+The launcher keeps a separate copy of the client for each hotel. Your Habbo client folder does not change.
+
+You can also set the hotel in the launcher:
 
 1. Press the gear icon to open **Settings**.
 2. In **Hotel domain**, type the hotel's website address without `https://`, for example `example.com`. Use exactly the address of the website, with `www.` if the website uses it.
 3. Leave **Hotel token (optional)** empty, unless the hotel gave you a launcher token.
-4. Press **OK**.
-
-### 4. Log in
-
-1. Press **Open example.com** in the launcher. The hotel's website opens in your browser.
-2. Sign in, if you are not signed in yet.
-3. Press **Open AIR client** on the website. If the browser asks to open the link with HabboCustomLauncher, allow it.
-4. The launcher prepares the client for the hotel and starts it. You are logged in.
-
-The launcher keeps a separate copy of the client for each hotel. Your Habbo client folder does not change.
+4. Press **OK**, then **Open example.com**. The hotel's website opens, and you continue at step 1 above.
 
 If the hotel gave you a launcher token, paste it in **Hotel token**. The main button then starts the client directly, without the website.
 
@@ -358,6 +394,55 @@ If the hotel gave you a launcher token, paste it in **Hotel token**. The main bu
 Open **Settings**, clear **Hotel domain**, and press **OK**. The launcher then works with Habbo's login codes again.
 
 ## Reference
+
+### The website button
+
+Atom CMS shows **Open AIR client** when `AIR_CLIENT_ENABLED=true` and the player is signed in:
+
+- **Dusk theme:** under **Go to <hotel name>** on the player's home page.
+- **Atom theme:** under **Go to <hotel name>** on the player's home page, and as **AIR client** in the site header.
+- **Atom Nuxt front end:** on the player's home page and in the site banner, when the player opened the website from the launcher. The launcher adds `?launcher=air`, and the website remembers it for that browser tab.
+
+The button opens `/game/air`. That route needs a signed-in player and works 10 times per minute. It creates a fresh login ticket and redirects to `habbo://hab?server=<APP_URL host>&token=<login ticket>`. While the setting is off, it answers 404.
+
+Atom also answers `POST /api/v1/client/launch` with `{"client": "air"}` with the same link in `url`. The login ticket works for 5 minutes and only once. `GET /api/v1/bootstrap` shows the setting as `clients.air_enabled`.
+
+Another website must create a fresh login ticket for the player and open `habbo://hab?server=example.com&token=<login ticket>`.
+
+### Game data
+
+After login, the AIR client loads `${url.prefix}/gamedata/hashes` and the four files it lists. PlusEMU builds these files:
+
+| File | Content |
+| --- | --- |
+| `external_variables` | `ExternalVariablesFiles`, merged in order. Then PlusEMU sets `furnidata.load.url` and `productdata.load.url` to its own files. `Variables` wins over everything. |
+| `external_flash_texts` | `ExternalTextsFiles`, merged in order. A file can have `key=value` lines or be a JSON object, such as Volt's `ExternalTexts.json`. |
+| `furnidata` | The [generated furniture data](/getting-started/configuration/#furniture-data-endpoints) from your database, as Habbo's XML. |
+| `productdata` | `ProductDataFile`: Habbo's XML or text file as it is, or a `ProductData.json` that PlusEMU converts to XML. Without it, PlusEMU uses the furniture names. |
+
+A relative file path is relative to `Config/`. PlusEMU reads a file again when it changes, so a game data change needs no restart.
+
+With Habbo's external variables, the AIR client loads furniture (`flash.dynamic.download.url`), clothing (`flash.client.url` and `external.figurepartlist.txt`) and most images from Habbo's servers. The hotel files pack has Volt's files, not the Flash `.swf` libraries that the AIR client needs. Only these files from the pack work for the AIR client:
+
+- Badge images: `badge.image.path` set to `https://example.com/hotel-files/c_images/album1584`.
+- Catalogue images: `image.library.catalogue.url` set to `https://example.com/hotel-files/c_images/catalogue/`.
+
+Habbo's file also points `external.texts.txt` and `external.override.texts.txt` at Habbo. The `Variables` in step 4 point both at your own texts file. The installer sets all four variables.
+
+For your own furniture, host the `.swf` files yourself and change `flash.dynamic.download.url`. See [add furniture](/features/add-furniture/#air-client).
+
+### The published client
+
+`https://assets.plusemu.dev/air/latest.json` lists the current patched client:
+
+| Field | Meaning |
+| --- | --- |
+| `version` | Habbo's client version and the patch revision, for example `38-1`. Use it as `ClientVersion`. |
+| `habboVersion` | Habbo's client version, for example `38`. |
+| `client.url`, `client.sha256` | The patched Windows client package. Use the URL as `ClientUrl`. The launcher uses this package on every system. |
+| `externalVariables`, `externalFlashTexts` | Habbo's AIR texts for that version, with their SHA-256. |
+
+The files of each version stay at `https://assets.plusemu.dev/air/client/<version>/`. Maintainers build and publish a new version with [`tools/patch-air-client.py`](https://github.com/plus-emulator/plusemu-installer/blob/main/tools/patch-air-client.py) in the installer repository.
 
 ### Endpoints
 

@@ -46,6 +46,7 @@ When the emulator is updated, players are disconnected for about a minute. Playe
 | `--assets` | `-Assets` | Updates the hotel files only, without stopping the emulator. See below. |
 | `--rollback` | `-Rollback` | Restores the newest backup. |
 | `--install-camera` | `-InstallCamera` | Sets up the [camera](/features/camera/) on a hotel that already runs the newest PlusEMU. |
+| `--with-air` | `-WithAir` | Sets up the [AIR client](/getting-started/air-client/#set-up-with-the-installer). Later updates keep it on and install the matching patched client. |
 
 `--with-assets` from older guides is still accepted and does nothing. The hotel files are part of every update.
 
