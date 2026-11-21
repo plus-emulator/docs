@@ -54,6 +54,7 @@ Every 5 minutes, the health check looks at your hotel. On Linux, cron runs `/usr
 - The newest nightly backup is younger than 36 hours. A new hotel has no backup before its first night, so this check waits for it.
 - The HTTPS certificate is valid for more than 30 more days. Not on a local install.
 - The last Cloudflare address refresh worked and is younger than 8 days. Not on a local install.
+- With the [AIR client](/getting-started/air-client/) on: `/api/client/air.json` and `/gamedata/hashes` answer, and the AIR game port 30000 accepts connections.
 
 While an update, a nightly backup, or the installer runs, the check skips its run, because they stop or restart services on purpose. The installer also runs it once at the end.
 
