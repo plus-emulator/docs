@@ -2,6 +2,9 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
+  redirects: {
+    '/changelog/2026-11-25/': '/changelog/2026-11-23/',
+  },
   site: 'https://docs.plusemu.dev',
   output: 'static',
   trailingSlash: 'always',
