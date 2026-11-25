@@ -85,7 +85,7 @@ Volt ships two habbicon folders in `habbicons/`: `default` and `habbo-225e1f8a`.
 "habbicons.asset.hash": "habbo-225e1f8a"
 ```
 
-`plusemu-update` keeps your own value of this setting. A hotel installed before 18 November 2026 still has `default`, so change it by hand after you update Volt to 1.0.9.
+`plusemu-update` changes `default` to `habbo-225e1f8a` for you. It keeps any other value, because that is your own choice. If you update by hand, change `default` yourself.
 
 Since Volt 1.0.8 and Volt Renderer 1.0.4, `habbicons.json` uses Habbo's own format. If you made your own habbicon folder, start again from a copy of `habbo-225e1f8a`.
 

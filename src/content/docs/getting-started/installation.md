@@ -17,6 +17,7 @@ Start with a fresh server. The installer changes the web server, database, firew
 | --- | --- | --- |
 | Operating system | Debian 12 or 13; Ubuntu 22.04, 24.04, or 26.04 | Windows Server 2019, 2022, or 2025 |
 | Architecture | x64 or ARM64 | x64 |
+| Processor | On x64: support for the x86-64-v2 instructions | Support for the x86-64-v2 instructions |
 | Free disk space | 10 GB | 15 GB on `C:` |
 | Access | Root or `sudo` | PowerShell as Administrator |
 
