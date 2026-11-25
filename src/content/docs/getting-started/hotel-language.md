@@ -50,6 +50,7 @@ To go back to English, use `--language en` or `-Language en`.
 4. It writes `hotel-files/language/ProductData.json`: every stock product with the name and description from the pack. Volt and the [AIR client](/getting-started/air-client/) use this file.
 5. With the AIR client, it adds the pack's texts and products to the `AirClient` settings in the emulator's `Config/config.json`.
 6. It writes the furniture names and descriptions from the pack into the `furniture` table. It matches the rows by `item_name`.
+   Volt shows these names when its `furnidata.url` in `configuration/renderer-config.json` is `/api/gamedata/furnidata`. The emulator then builds the furniture data from the `furniture` table. The installer sets this address when the emulator supports it.
 7. It sets `APP_LOCALE` in Atom CMS. This is the website's default language. A visitor still gets their browser's language when the website has it.
 8. It restarts the emulator when the settings or the furniture names changed. Players are disconnected for a moment.
 
@@ -58,6 +59,12 @@ To go back to English, use `--language en` or `-Language en`.
 - **Edited furniture names are replaced.** The installer writes the furniture names only when the language changes, not on every update. Going back to English writes the names from the stock `FurnitureData.json`.
 - **A failed download changes nothing.** A hotel that already has a pack keeps it. A hotel without a pack stays English. The installer shows a warning and tries again on the next run or update.
 - **A language problem never undoes an update.** The language step runs after the update is done.
+
+## How much is translated
+
+- **Client texts.** About three quarters of the client texts change: 71% for Dutch, up to 79% for Spanish. The other texts are the same in every language, such as names, or Habbo's hotel has no translation for them. Those texts stay English.
+- **Furniture names.** All stock furniture items get the name from that hotel. In Finnish and Turkish, 1 item of 14,415 keeps its English name.
+- **Product names.** About two thirds of the product names change: 63% to 73%, depending on the language. Habbo no longer lists many old items, such as `shelves_norja`, so these keep the English product name. The furniture name of the same item does change.
 
 ## What stays English
 
