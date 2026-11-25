@@ -19,7 +19,7 @@ The newest changes come first. Each page covers a few days and names the version
 ## Latest versions
 
 - [PlusEMU 1.0.38](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.38)
-- [Volt 1.0.18](https://github.com/plus-emulator/Volt/releases/tag/v1.0.18)
+- [Volt 1.0.19](https://github.com/plus-emulator/Volt/releases/tag/v1.0.19)
 - [Volt Renderer 1.0.9](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.9)
 - [Installer 2.3.1](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.3.1)
 
@@ -27,8 +27,7 @@ To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
 ## All changes
 
-- [25 November 2026](/changelog/2026-11-25/): PlusEMU 1.0.38, Volt 1.0.17 and 1.0.18, Volt Renderer 1.0.9, Atom CMS.
-- [23-25 November 2026](/changelog/2026-11-23/): installer, hotel language.
+- [23-25 November 2026](/changelog/2026-11-23/): PlusEMU 1.0.38, Volt 1.0.17 to 1.0.19, Volt Renderer 1.0.9, installer, Atom CMS.
 - [18-22 November 2026](/changelog/2026-11-18/): PlusEMU 1.0.32 to 1.0.37, Volt 1.0.10 to 1.0.16, Volt Renderer 1.0.5 to 1.0.8, installer, Atom CMS.
 - [9-18 November 2026](/changelog/2026-11-09/): PlusEMU 1.0.28 to 1.0.31, Volt 1.0.4 to 1.0.9, Volt Renderer 1.0.2 to 1.0.4, installer 2.3.0 and 2.3.1, Atom CMS.
 - [31 October - 8 November 2026](/changelog/2026-10-31/): PlusEMU 1.0.26 and 1.0.27, Volt 1.0.1 to 1.0.3, Volt Renderer 1.0.1, installer 2.1.0 to 2.2.1.
