@@ -41,6 +41,19 @@ Set your own database password and camera token (`Camera.Bearer`). Do not commit
 
 The installer keeps the emulator and database on local addresses. The web server forwards public client requests to the emulator.
 
+### Connection and RCON security
+
+| Setting | Purpose | Default |
+| --- | --- | --- |
+| `Flash.MaxConnectionsPerIp` | Most AIR client connections one address may hold | `20` |
+| `Flash.TrustedProxies`, `WebServer.TrustedProxies` | Proxies that may pass the visitor's real address | `127.0.0.1`, `::1` |
+| `Rcon.AllowedAddresses` | IP addresses that may use RCON. Host names such as `localhost` never match. | `127.0.0.1` |
+| `Rcon.Secret` | When set, every RCON request must send this secret | Empty (off) |
+
+If a proxy other than the local one sits in front of the emulator, add its address to `TrustedProxies`. Otherwise all players share the proxy's address and its connection limit.
+
+To turn on the RCON secret, set the same long random value in `Rcon.Secret` and in `RCON_SECRET` in the Atom CMS `.env` file. Then restart the emulator and run `php artisan optimize` in the Atom CMS folder.
+
 Changes to `Config/config.json` take effect after an emulator restart. Game settings stored in the `server_settings` database table work differently. You can reload them without a restart. Staff need both `command.update` and `command.update_configuration` to reload them with `:update settings`. See the [server settings reference](/getting-started/server-settings/) for every key.
 
 ## Restart and inspect the emulator
