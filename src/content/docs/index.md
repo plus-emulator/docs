@@ -4,7 +4,7 @@ description: Set up your PlusEMU hotel, manage ranks and permissions, and config
 tableOfContents: false
 ---
 
-PlusEMU is a Habbo Hotel server emulator written in C# on .NET 10. It runs your hotel's rooms, users, furniture, games, and economy. The [Volt client](https://github.com/plus-emulator/Volt) connects players to the emulator in their browser.
+PlusEMU is a Habbo Hotel server emulator written in C# on .NET 11. It runs your hotel's rooms, users, furniture, games, and economy. The [Volt client](https://github.com/plus-emulator/Volt) connects players to the emulator in their browser.
 
 Use these guides to set up a hotel, manage staff access, and configure the main features.
 
