@@ -19,10 +19,11 @@ The newest changes come first. Each page covers a few days and names the version
 ## Latest versions
 
 - [PlusEMU 1.0.42](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.42)
-- [Volt 1.0.20](https://github.com/plus-emulator/Volt/releases/tag/v1.0.20)
+- [Volt 1.1.0](https://github.com/plus-emulator/Volt/releases/tag/v1.1.0)
 - [Volt Renderer 1.0.10](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.10)
-- [Installer 2.4.0](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.4.0)
-- [Atom CMS 1.6.0](https://github.com/atom-projects/atom-cms/releases/tag/v1.6.0)
+- [Installer 2.5.0](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.5.0)
+- [Atom CMS 1.6.1](https://github.com/atom-projects/atom-cms/releases/tag/v1.6.1)
+- [Atom Nuxt 1.0.0](https://github.com/atom-projects/atom-nuxt/releases/tag/v1.0.0)
 
 To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
