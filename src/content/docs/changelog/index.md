@@ -2,7 +2,7 @@
 title: Changelog
 description: What changed in PlusEMU, Volt, Volt Renderer and the installer, from the first release to today.
 sidebar:
-  order: 0
+  order: -1
   label: Overview
 ---
 
@@ -18,9 +18,9 @@ The newest changes come first. Each page covers a few days and names the version
 
 ## Latest versions
 
-- [PlusEMU 1.0.41](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.41)
-- [Volt 1.0.19](https://github.com/plus-emulator/Volt/releases/tag/v1.0.19)
-- [Volt Renderer 1.0.9](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.9)
+- [PlusEMU 1.0.42](https://github.com/plus-emulator/PlusEMU/releases/tag/v1.0.42)
+- [Volt 1.0.20](https://github.com/plus-emulator/Volt/releases/tag/v1.0.20)
+- [Volt Renderer 1.0.10](https://github.com/plus-emulator/Volt-Renderer/releases/tag/v1.0.10)
 - [Installer 2.4.0](https://github.com/plus-emulator/plusemu-installer/releases/tag/v2.4.0)
 - [Atom CMS 1.6.0](https://github.com/atom-projects/atom-cms/releases/tag/v1.6.0)
 
@@ -28,6 +28,7 @@ To update a hotel, see [Update PlusEMU](/getting-started/updates/).
 
 ## All changes
 
+- [26 November 2026](/changelog/2026-11-26/) covers the mobile hotel, avatar dance and posture fixes, catalog icons, installer changes and Atom CMS updates.
 - [23-25 November 2026](/changelog/2026-11-23/): PlusEMU 1.0.38 to 1.0.41, Volt 1.0.17 to 1.0.19, Volt Renderer 1.0.9, installer 2.4.0, Atom CMS 1.6.0.
 - [18-22 November 2026](/changelog/2026-11-18/): PlusEMU 1.0.32 to 1.0.37, Volt 1.0.10 to 1.0.16, Volt Renderer 1.0.5 to 1.0.8, installer, Atom CMS.
 - [9-18 November 2026](/changelog/2026-11-09/): PlusEMU 1.0.28 to 1.0.31, Volt 1.0.4 to 1.0.9, Volt Renderer 1.0.2 to 1.0.4, installer 2.3.0 and 2.3.1, Atom CMS.
